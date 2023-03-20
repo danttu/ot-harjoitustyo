@@ -1,5 +1,5 @@
 # Ohjelmistotekniikka 2023 harjoitustyö
-Tämä **README***-tiedosto* sisältää luettelon tehtävistä.
+Tämä **README**_-tiedosto_ sisältää luettelon tehtävistä.
 
 ## Tehtävät
 ### Viikko 1
