@@ -1,0 +1,105 @@
+commit d772b8014c678491b22de06f8d57ce0516d29abe (HEAD -> main)
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:42:29 2023 +0200
+
+    poistettu file1 ja uudelleennimetty file2 -> file22
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 9fdef415eca12518752993957bc6aa902488c26d
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:40:05 2023 +0200
+
+    Lisätty hakemisto tiedostoja ja tiedostot file1, file2 ja file3
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f72900a0199015059b490c56edf17011897213fb
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:34:52 2023 +0200
+
+    Muokattu eka.txt ja kolmas.txt
+
+ eka.txt    | 6 +++---
+ kolmas.txt | 3 ++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+commit 75174ce95d70d328fdead7dc3b7aca611bac4a5a
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:32:27 2023 +0200
+
+    Poistettu toinen.txt ja uudelleennimetty tiedosto.txt -> eka.txt
+
+ tiedosto.txt => eka.txt | 0
+ toinen.txt              | 1 -
+ 2 files changed, 1 deletion(-)
+
+commit cbb7706f332506b68b3d962f665807ab51e961f1
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:27:51 2023 +0200
+
+    Poistettu hieman tekstiä ja samalla lisätty lisää tekstiä
+
+ tiedosto.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+commit 33c6ff1f371264f01240fd497290ee20a9e4edd0
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:26:44 2023 +0200
+
+    Muokattu tiedosto.txt
+
+ tiedosto.txt | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+commit 2986eb3bc587e82145ea6c14ca7e140bb9eb3cb7
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:17:33 2023 +0200
+
+    Lisätty stuff hakemisto ja tiedosto siihen
+
+ stuff/Moi.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4160bceafd46beb73757168d153b9e25369a0d47
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:16:22 2023 +0200
+
+    Muokattu toinen.txt ja kolmas.txt
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 301d6000e73761441d19a61678824ce1ea8573f9
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:15:28 2023 +0200
+
+    lisätty kolmas.txt
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit d75eddaa90fdfeb6b6805344593e1f2d61fb3850
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:12:31 2023 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 34744d9b28e5b5e90c690bd23d036876e698c191
+Author: danttu <danttu112@gmail.com>
+Date:   Mon Mar 20 18:10:43 2023 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
