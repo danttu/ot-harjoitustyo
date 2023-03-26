@@ -7,7 +7,7 @@ Tämä **README**_-tiedosto_ sisältää luettelon tehtävistä.
 
 [komentorivi.txt](https://github.com/danttu/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
 ### Viikko 2
-**TBA**
+[maksukortti.py](https://github.com/danttu/ot-harjoitustyo/blob/main/laskarit/viikko2/maksukortti/src/maksukortti.py)
 
 ### Viikko 3
 **TBA**
