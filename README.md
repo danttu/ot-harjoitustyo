@@ -5,6 +5,8 @@ Tämä **README**_-tiedosto_ sisältää luettelon tehtävistä.
 ### Harjoitustyö
 [tuntikirjanpito.md](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/tuntikirjanpito.md)
 
+[vaatimusmaarittely.md](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
+
 ### Viikko 1
 [gitlog.txt](https://github.com/danttu/ot-harjoitustyo/blob/main/laskarit/viikko1/gitlog.txt)
 
