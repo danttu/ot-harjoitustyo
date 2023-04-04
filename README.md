@@ -5,3 +5,4 @@ Tämä **README**_-tiedosto_ kertoo harjoitustyöstä ja siihen liittyvistä asi
 ### Dokumentaatio
 - [Työaikakirjanpito](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/tuntikirjanpito.md)
 - [Vaatimusmäärittely](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
+- [Changelog](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/changelog.md)
