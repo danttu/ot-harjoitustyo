@@ -1,4 +1,4 @@
-### Changelog
+# Changelog
 
 ## Viikko 3
 - Lisätty Main-luokka, joka sisältää pelin rungon
