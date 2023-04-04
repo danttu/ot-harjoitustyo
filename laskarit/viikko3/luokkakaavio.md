@@ -5,15 +5,24 @@ Monopolia pelataan k채ytt채en kahta noppaa. Pelaajia on v채hint채채n 2 ja enint�
 ```mermaid
  classDiagram
       Pelilauta <.. "2..8" Pelaaja
-      Pelilauta <.. Ruutu
+      Pelilauta <.. "40" Ruutu
       Pelilauta <.. "2" Noppa
       Pelaaja <.. Ruutu
+      Pelaaja <.. Katu
+      SattumaJaYhteismaa <.. Kortti
+      Ruutu <.. AloitusRuutu
+      Ruutu <.. Vankila
+      Ruutu <.. SattumaJaYhteismaa
+      Ruutu <.. AsematJaLaitokset
+      Ruutu <.. Katu
       class Noppa{
           silmaluku
       }
       class Pelaaja{
           pelinappula
           pelinappulanSijainti
+          kadut
+          raha
       }
       class Pelilauta{
           pelaajat
@@ -21,7 +30,33 @@ Monopolia pelataan k채ytt채en kahta noppaa. Pelaajia on v채hint채채n 2 ja enint�
           nopat
       }
       class Ruutu{
-          nykyinen
+          tyyppi
+          sijainti
           seuraava
+      }
+      class AloitusRuutu{
+          sijainti
+      }
+      class Vankila{
+          sijainti
+      }
+      class SattumaJaYhteismaa{
+          tyyppi
+          sijainti
+          kortit
+      }
+      class AsematJaLaitokset{
+          tyyppi
+          sijainti
+      }
+      class Katu{
+          nimi
+          sijainti
+          talot
+          hotelli
+          
+      }
+      class Kortti{
+          toiminto
       }
 ```
