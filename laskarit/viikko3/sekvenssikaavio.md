@@ -3,6 +3,9 @@
 ```mermaid
 sequenceDiagram
     Main->>machine: machine = Machine()
+    activate machine
+    machine-->>Main: 
+    deactivate machine
     Main->>machine: machine.drive()
     activate machine
     machine->>Engine: self._engine.start()
