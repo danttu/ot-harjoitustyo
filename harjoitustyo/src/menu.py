@@ -8,11 +8,16 @@ class Menu:
         self.font = pygame.font.SysFont("Arial", 20)
         self.object = []
         
-        #MainMenu objects
+        self.alreadyPressed = False
+
+        #Main Menu objects
         self.object.append((Button((width/2)-50, height/2, 100, 50, "Aloita Peli", self.font), "mainMenu"))
         self.object.append((Button((width/2)-50, (height/2)+75, 100, 50, "Asetukset", self.font), "mainMenu"))
         self.object.append((Button((width/2)-50, (height/2)+150, 100, 50, "Poistu pelistä", self.font), "mainMenu"))
         self.object.append((Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "mainMenu"))
+
+        #Settings Menu objects
+        self.object.append((Button((width/2)-50, (height/2)+150, 100, 50, "Takaisin", self.font), "settingsMenu"))
 
 class Label:
     def __init__(self, x_pos, y_pos, text, font_size):
@@ -23,7 +28,7 @@ class Label:
 
         self.text = self.font.render(text, True, self.color)
 
-    def display(self, window):
+    def display(self, window, mouse, mouseStatus):
         window.blit(self.text, (self.x, self.y))
 
 class Button:
@@ -36,6 +41,7 @@ class Button:
         self.font = font
         self.isBeingHovered = False
         self.isPressed = False
+        
         self.buttonHoverSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "button.wav"))
         self.buttonPressedSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "buttonPressed.wav"))
 
@@ -49,16 +55,23 @@ class Button:
             "hovered" : "#d66d6d"
         }
     
-    def display(self, window):
-        mousePos = pygame.mouse.get_pos()
+    def display(self, window, mouse, mouseStatus):
+        if not mouseStatus:
+            Menu.alreadyPressed = False
         self.buttonSurface.fill(self.buttonColors["unpressed"])
-        if self.buttonRect.collidepoint(mousePos):
+        if self.buttonRect.collidepoint(mouse):
             self.buttonSurface.fill(self.buttonColors["hovered"])
             if not self.isBeingHovered:
                 self.isBeingHovered = True
                 pygame.mixer.Sound.play(self.buttonHoverSound)
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                
                 if not self.isPressed:
+                    if self.text == "Asetukset":
+                        window.fill((0, 0, 0))
+                        pygame.draw.rect(window, (10, 10, 10), (50, 50, window.get_width()-100, window.get_height()-100))
+                    if self.text == "Takaisin":
+                        window.fill((0, 0, 0))
                     self.isPressed = True
                     pygame.mixer.Sound.play(self.buttonPressedSound)
                     return self.text
@@ -67,6 +80,7 @@ class Button:
         else:
             self.isBeingHovered = False
 
+        
         self.buttonSurface.blit(self.buttonText, [self.buttonRect.width/2 - self.buttonText.get_rect().width/2, self.buttonRect.height/2 - self.buttonText.get_rect().height/2])
         window.blit(self.buttonSurface, self.buttonRect)
 

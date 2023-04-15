@@ -1,11 +1,16 @@
 import pygame
+import os
 from menu import Menu
+from settings import Settings
+
+dirname = os.path.dirname(__file__)
 
 class Main:
     def __init__(self):
 
         #Read and check settings
-        with open("settings.txt", "r") as settings:
+        self.settings = Settings()
+        with open(os.path.join(dirname, "settings.txt"), "r") as settings:
             settings_list = self.checkSettings(settings)
         self.fps = int(settings_list["framerate"])
         self.clock = pygame.time.Clock()
@@ -17,16 +22,24 @@ class Main:
             self.resX = 640
             self.resY = 480
 
+        self.mouseButtonHeldDown = False
+        
         pygame.init()
         #Init menu and window
         self.window = pygame.display.set_mode((self.resX, self.resY))
         self.menu = Menu(self.resX, self.resY)
         self.menu_objects = self.menu.object
 
+        #Main menu: mainMenu, Settings: settingsMenu, Game: gameView
+        self.currentScreen = "mainMenu"
+
         pygame.display.update()
         
         #Starting gameloop
         self.runGame()
+
+    def importSettings(self):
+        pass
 
     def runGame(self):
         while True:
@@ -37,21 +50,26 @@ class Main:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit() 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouseButtonHeldDown = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.mouseButtonHeldDown = False
 
     def drawScreen(self):
+        mousePos = pygame.mouse.get_pos()
         #Menu
         for object in self.menu_objects:
-            if object[1] == "mainMenu":
-                komento = object[0].display(self.window)
+            if object[1] == self.currentScreen:
+                komento = object[0].display(self.window, mousePos, self.mouseButtonHeldDown)
                 if komento == "Asetukset":
-                    #TBA
-                    pass
+                    self.currentScreen = "settingsMenu"
                 if komento == "Aloita Peli":
                     #TBA
                     pass
-                if komento == "Poistu pelistä":
-                    
+                if komento == "Poistu pelistä":                    
                     exit()
+                if komento == "Takaisin":
+                    self.currentScreen = "mainMenu"
         pygame.display.update()
         self.clock.tick(self.fps)
 
