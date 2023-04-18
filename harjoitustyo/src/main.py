@@ -1,6 +1,7 @@
 import pygame
 import os
 from menu import Menu
+from menu import Slider
 from settings import Settings
 
 dirname = os.path.dirname(__file__)
@@ -10,36 +11,33 @@ class Main:
 
         #Read and check settings
         self.settings = Settings()
-        with open(os.path.join(dirname, "settings.txt"), "r") as settings:
-            settings_list = self.checkSettings(settings)
-        self.fps = int(settings_list["framerate"])
+        self.fps = self.settings.getFramerate()
         self.clock = pygame.time.Clock()
-        try:
-            self.resX = int(settings_list["resolutionX"])
-            self.resY = int(settings_list["resolutionY"])
-        except ValueError:
-            print("Wrong resolution, using default values...")
-            self.resX = 640
-            self.resY = 480
+        self.resolution = self.settings.getResolution()
 
         self.mouseButtonHeldDown = False
-        
-        pygame.init()
-        #Init menu and window
-        self.window = pygame.display.set_mode((self.resX, self.resY))
-        self.menu = Menu(self.resX, self.resY)
-        self.menu_objects = self.menu.object
-
+        self.changed = False
         #Main menu: mainMenu, Settings: settingsMenu, Game: gameView
         self.currentScreen = "mainMenu"
+
+        pygame.init()
+        #Init menu and window
+        self.window = pygame.display.set_mode(self.resolution)
+        pygame.display.set_caption("Tower Defence")
+        self.menu = Menu(self.resolution[0], self.resolution[1])
+        self.menu_objects = self.menu.object
 
         pygame.display.update()
         
         #Starting gameloop
         self.runGame()
 
-    def importSettings(self):
-        pass
+    def changeResolution(self):
+        self.resolution = self.settings.getResolution()
+        pygame.display.quit()
+        self.window = pygame.display.set_mode(self.resolution)
+        self.menu = Menu(self.resolution[0], self.resolution[1])
+        self.menu_objects = self.menu.object
 
     def runGame(self):
         while True:
@@ -54,10 +52,20 @@ class Main:
                 self.mouseButtonHeldDown = True
             if event.type == pygame.MOUSEBUTTONUP:
                 self.mouseButtonHeldDown = False
+            
+            #TBA Resolution change
+            #if event.type == pygame.VIDEORESIZE:
+                #print(event.size)
+                #self.changed = True
+            if self.changed:
+                self.changed = False
+                self.changeResolution()
+                
 
     def drawScreen(self):
         mousePos = pygame.mouse.get_pos()
         #Menu
+        self.window.fill((0, 0, 0))
         for object in self.menu_objects:
             if object[1] == self.currentScreen:
                 komento = object[0].display(self.window, mousePos, self.mouseButtonHeldDown)
@@ -70,6 +78,18 @@ class Main:
                     exit()
                 if komento == "Takaisin":
                     self.currentScreen = "mainMenu"
+                if komento == "sound" or komento == "music":
+                    value = object[0].getValue()
+                    print(value)
+                if komento == "Käytä":
+                    for o in self.menu_objects:
+                        if o[0].getType() == "Slider":
+                            if o[0].type == "resolution":
+                                value = o[0].getValue()
+                                print(value)
+                                self.settings.setResolution(value)
+                    
+                    self.changed = True
         pygame.display.update()
         self.clock.tick(self.fps)
 

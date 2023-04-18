@@ -1,11 +1,11 @@
 
 class Settings:
     def __init__(self):
-        self.music_vol: 1.0
-        self.sound_vol: 1.0
-        self.framerate: 60
-        self.resolutionX: 1280
-        self.resolutionY: 720
+        self.music_vol = 1.0
+        self.sound_vol = 1.0
+        self.framerate = 60
+        self.resolutionX = 1280
+        self.resolutionY = 720
     
     # Set music and sound volume. Takes floats between 0.0 (0 %) and 1.0 (100%)
     def setVolume(self, music: float, sound: float):
@@ -27,10 +27,21 @@ class Settings:
         self.framerate = fps
 
     # Set window resolution
-    def setResolution(self, x: int, y: int):
+    def setResolution(self, res: tuple):
+        x = res[0]
+        y = res[1]
         if x < 640:
             x = 640
         if y < 480:
             y = 480
         self.resolutionX = x
         self.resolutionY = y
+
+    def getVolume(self):
+        return (self.music_vol, self.sound_vol)
+    
+    def getFramerate(self):
+        return self.framerate
+    
+    def getResolution(self):
+        return (self.resolutionX, self.resolutionY)
