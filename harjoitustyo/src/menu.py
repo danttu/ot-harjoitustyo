@@ -4,27 +4,26 @@ import os
 dirname = os.path.dirname(__file__)
 
 class Menu:
-    def __init__(self, width, height):
+    def __init__(self, width, height, settings, firstInit, sound_vol):
         self.font = pygame.font.SysFont("Arial", 20)
         self.object = []
-        
-        self.alreadyPressed = False
-
         #Main Menu objects
-        self.object.append((Button((width/2)-50, height/2, 100, 50, "Aloita Peli", self.font), "mainMenu"))
-        self.object.append((Button((width/2)-50, (height/2)+75, 100, 50, "Asetukset", self.font), "mainMenu"))
-        self.object.append((Button((width/2)-50, (height/2)+150, 100, 50, "Poistu pelistä", self.font), "mainMenu"))
+        self.object.append((Button((width/2)-50, height/2, 100, 50, "Aloita Peli", self.font, sound_vol), "mainMenu"))
+        self.object.append((Button((width/2)-50, (height/2)+75, 100, 50, "Asetukset", self.font, sound_vol), "mainMenu"))
+        self.object.append((Button((width/2)-50, (height/2)+150, 100, 50, "Poistu pelistä", self.font, sound_vol), "mainMenu"))
         self.object.append((Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "mainMenu"))
 
         #Settings Menu objects
-        self.object.append((Button((width/2)-100, (height/2)+150, 100, 50, "Takaisin", self.font), "settingsMenu"))
-        self.object.append((Button((width/2)+100, (height/2)+150, 100, 50, "Käytä", self.font), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)-160, 200, 10, "music"), "settingsMenu"))
+        self.object.append((Button((width/2)-100, (height/2)+150, 100, 50, "Takaisin", self.font, sound_vol), "settingsMenu"))
+        self.object.append((Button((width/2)+100, (height/2)+150, 100, 50, "Käytä", self.font, sound_vol), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)-160, 200, 10, "music", settings, firstInit, sound_vol), "settingsMenu"))
         self.object.append((Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)-60, 200, 10, "sound"), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)-60, 200, 10, "sound", settings, firstInit, sound_vol), "settingsMenu"))
         self.object.append((Label((width/2)-50, (height/2)-100, "Ääni", 20), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10, "resolution"), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10, "resolution", settings, firstInit, sound_vol), "settingsMenu"))
         self.object.append((Label((width/2)-50, (height/2), "Resoluutio", 20), "settingsMenu"))
+
+        self.alreadyPressed = False
 
 class Label:
     def __init__(self, x_pos, y_pos, text, font_size):
@@ -42,7 +41,7 @@ class Label:
         return "Label"
 
 class Button:
-    def __init__(self, x_pos, y_pos, width, height, text, font):
+    def __init__(self, x_pos, y_pos, width, height, text, font, sound_vol):
         self.x = x_pos
         self.y = y_pos
         self.width = width
@@ -54,6 +53,8 @@ class Button:
         
         self.buttonHoverSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "button.wav"))
         self.buttonPressedSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "buttonPressed.wav"))
+        self.buttonHoverSound.set_volume(sound_vol)
+        self.buttonPressedSound.set_volume(sound_vol)
 
         self.buttonSurface = pygame.Surface((self.width, self.height))
         self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -98,20 +99,51 @@ class Button:
         return "Button"
 
 class Slider:
-    def __init__(self, x_pos, y_pos, width, height, type):
+    def __init__(self, x_pos, y_pos, width, height, type, settings, firstInit, sound_vol):
         self.x = x_pos
         self.y = y_pos
         self.x_circle = self.x
         self.width = width
         self.height = height
         self.type = type
-
         self.value = 1.0
+        if firstInit:
+            self.value = 1.0
+        else:
+            if self.type == "sound":
+                self.value = settings.getVolume()[1]
+            if self.type == "music":
+                self.value = settings.getVolume()[0]
+            if self.type == "resolution":
+                res = settings.getResolution()
+                if res[0] == 640:
+                    self.value = 0.0
+                if res[0] == 800:
+                    self.value = 0.1
+                if res[0] == 1024:
+                    self.value = 0.2
+                if res[0] == 1152:
+                    self.value = 0.3
+                if res[0] == 1280 and res[1] == 720:
+                    self.value = 0.4
+                if res[0] == 1280 and res[1] == 960:
+                    self.value = 0.5
+                if res[0] == 1366:
+                    self.value = 0.6
+                if res[0] == 1440:
+                    self.value = 0.7
+                if res[0] == 1660:
+                    self.value = 0.8
+                if res[0] == 1680:
+                    self.value = 0.9
+                if res[0] == 1920:
+                    self.value = 1.0
         self.rect_slider = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_circle = pygame.Rect(self.x, self.y-5, 20, 20)
         self.font = pygame.font.SysFont("Arial", 20)
         self.moved = False
         self.sliderMoved = pygame.mixer.Sound(os.path.join(dirname, "assets", "button.wav"))
+        self.sliderMoved.set_volume(sound_vol)
 
     #Handles displaying and interaction of sliders
     def display(self, window, mouse, mouseStatus):
@@ -130,13 +162,14 @@ class Slider:
                     pygame.mixer.Sound.play(self.sliderMoved)
                     newValue = True
                     #print(self.x_circle)
+            self.value = abs(self.x-self.x_circle)
+            self.value = round((self.value*100/self.width)/100, 1)
         
-        self.value = abs(self.x-self.x_circle)
-        self.value = round((self.value*100/self.width)/100, 1)
+        self.x_circle = self.x+(20*(self.value*10))
         #print(self.value)
         if self.type == "sound" or self.type == "music":
             value = self.value
-            text = self.font.render(str(value), True, (255, 255, 255))
+            text = self.font.render(str(self.value), True, (255, 255, 255))
         if self.type == "resolution":
             value = self.getValue()
             value = str(value[0]) + "x" + str(value[1])

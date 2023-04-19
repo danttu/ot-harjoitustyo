@@ -11,6 +11,7 @@ class Main:
 
         #Read and check settings
         self.settings = Settings()
+        self.mixer = pygame.mixer.init()
         self.fps = self.settings.getFramerate()
         self.clock = pygame.time.Clock()
         self.resolution = self.settings.getResolution()
@@ -24,7 +25,7 @@ class Main:
         #Init menu and window
         self.window = pygame.display.set_mode(self.resolution)
         pygame.display.set_caption("Tower Defence")
-        self.menu = Menu(self.resolution[0], self.resolution[1])
+        self.menu = Menu(self.resolution[0], self.resolution[1], self.settings, True, self.settings.getVolume()[1])
         self.menu_objects = self.menu.object
 
         pygame.display.update()
@@ -36,7 +37,7 @@ class Main:
         self.resolution = self.settings.getResolution()
         pygame.display.quit()
         self.window = pygame.display.set_mode(self.resolution)
-        self.menu = Menu(self.resolution[0], self.resolution[1])
+        self.menu = Menu(self.resolution[0], self.resolution[1], self.settings, False, self.settings.getVolume()[1])
         self.menu_objects = self.menu.object
 
     def runGame(self):
@@ -78,18 +79,21 @@ class Main:
                     exit()
                 if komento == "Takaisin":
                     self.currentScreen = "mainMenu"
-                if komento == "sound" or komento == "music":
-                    value = object[0].getValue()
-                    print(value)
                 if komento == "Käytä":
                     for o in self.menu_objects:
                         if o[0].getType() == "Slider":
+                            if o[0].type == "sound":
+                                sound_vol = o[0].value
+                                continue
+                            if o[0].type == "music":
+                                music_vol = o[0].value
+                                continue
                             if o[0].type == "resolution":
                                 value = o[0].getValue()
                                 print(value)
                                 self.settings.setResolution(value)
-                    
-                    self.changed = True
+                                self.changed = True
+                    self.settings.setVolume(music_vol, sound_vol)                                 
         pygame.display.update()
         self.clock.tick(self.fps)
 
