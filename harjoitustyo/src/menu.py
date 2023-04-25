@@ -1,29 +1,52 @@
-import pygame
 import os
+import pygame
+from turrets import Turret
 
 dirname = os.path.dirname(__file__)
+
 
 class Menu:
     def __init__(self, width, height, settings, firstInit, sound_vol):
         self.font = pygame.font.SysFont("Arial", 20)
         self.object = []
-        #Main Menu objects
-        self.object.append((Button((width/2)-50, height/2, 100, 50, "Aloita Peli", self.font, sound_vol), "mainMenu"))
-        self.object.append((Button((width/2)-50, (height/2)+75, 100, 50, "Asetukset", self.font, sound_vol), "mainMenu"))
-        self.object.append((Button((width/2)-50, (height/2)+150, 100, 50, "Poistu pelistä", self.font, sound_vol), "mainMenu"))
-        self.object.append((Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "mainMenu"))
+        # Main Menu objects
+        self.object.append((Button((width/2)-50, height/2, 100,
+                           50, "Aloita Peli", self.font, sound_vol), "mainMenu"))
+        self.object.append((Button((width/2)-50, (height/2)+75,
+                           100, 50, "Asetukset", self.font, sound_vol), "mainMenu"))
+        self.object.append((Button((width/2)-50, (height/2)+150, 100,
+                           50, "Poistu pelistä", self.font, sound_vol), "mainMenu"))
+        self.object.append(
+            (Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "mainMenu"))
 
-        #Settings Menu objects
-        self.object.append((Button((width/2)-100, (height/2)+150, 100, 50, "Takaisin", self.font, sound_vol), "settingsMenu"))
-        self.object.append((Button((width/2)+100, (height/2)+150, 100, 50, "Käytä", self.font, sound_vol), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)-160, 200, 10, "music", settings, firstInit, sound_vol), "settingsMenu"))
-        self.object.append((Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)-60, 200, 10, "sound", settings, firstInit, sound_vol), "settingsMenu"))
-        self.object.append((Label((width/2)-50, (height/2)-100, "Ääni", 20), "settingsMenu"))
-        self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10, "resolution", settings, firstInit, sound_vol), "settingsMenu"))
-        self.object.append((Label((width/2)-50, (height/2), "Resoluutio", 20), "settingsMenu"))
+        # Settings Menu objects
+        self.object.append((Button((width/2)-100, (height/2)+150, 100,
+                           50, "Takaisin", self.font, sound_vol), "settingsMenu"))
+        self.object.append((Button((width/2)+100, (height/2)+150,
+                           100, 50, "Käytä", self.font, sound_vol), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)-160, 200,
+                           10, "music", settings, firstInit, sound_vol), "settingsMenu"))
+        self.object.append(
+            (Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)-60, 200,
+                           10, "sound", settings, firstInit, sound_vol), "settingsMenu"))
+        self.object.append(
+            (Label((width/2)-50, (height/2)-100, "Ääni", 20), "settingsMenu"))
+        self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10,
+                           "resolution", settings, firstInit, sound_vol), "settingsMenu"))
+        self.object.append(
+            (Label((width/2)-50, (height/2), "Resoluutio", 20), "settingsMenu"))
+
+        # Game objects when construct mode is true
+        self.object.append((Button(width-150, height-150, 100,
+                           50, "Valmis", self.font, sound_vol), "gameViewC"))
+        self.object.append((Button(width-150, height-250, 100,
+                           50, "Osta", self.font, sound_vol), "gameViewC"))
+        self.object.append((Icon(False, False, "cannon"), "gameViewC"))
+        self.object.append((Icon(True, False, "minigun"), "gameViewC"))
 
         self.alreadyPressed = False
+
 
 class Label:
     def __init__(self, x_pos, y_pos, text, font_size):
@@ -34,11 +57,12 @@ class Label:
 
         self.text = self.font.render(text, True, self.color)
 
-    def display(self, window, mouse, mouseStatus):
+    def display(self, window, mouse, mouseStatus, player):
         window.blit(self.text, (self.x, self.y))
-    
+
     def getType(self):
         return "Label"
+
 
 class Button:
     def __init__(self, x_pos, y_pos, width, height, text, font, sound_vol):
@@ -50,9 +74,11 @@ class Button:
         self.font = font
         self.isBeingHovered = False
         self.isPressed = False
-        
-        self.buttonHoverSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "button.wav"))
-        self.buttonPressedSound = pygame.mixer.Sound(os.path.join(dirname, "assets", "buttonPressed.wav"))
+
+        self.buttonHoverSound = pygame.mixer.Sound(
+            os.path.join(dirname, "assets", "button.wav"))
+        self.buttonPressedSound = pygame.mixer.Sound(
+            os.path.join(dirname, "assets", "buttonPressed.wav"))
         self.buttonHoverSound.set_volume(sound_vol)
         self.buttonPressedSound.set_volume(sound_vol)
 
@@ -62,11 +88,11 @@ class Button:
         self.buttonText = self.font.render(text, True, (25, 25, 25))
 
         self.buttonColors = {
-            "unpressed" : "#ff0000",
-            "hovered" : "#d66d6d"
+            "unpressed": "#ff0000",
+            "hovered": "#d66d6d"
         }
-    
-    def display(self, window, mouse, mouseStatus):
+
+    def display(self, window, mouse, mouseStatus, player):
         if not mouseStatus:
             Menu.alreadyPressed = False
         self.buttonSurface.fill(self.buttonColors["unpressed"])
@@ -80,7 +106,6 @@ class Button:
                     Menu.alreadyPressed = True
                     if self.text == "Asetukset":
                         window.fill((0, 0, 0))
-                        pygame.draw.rect(window, (10, 10, 10), (50, 50, window.get_width()-100, window.get_height()-100))
                     if self.text == "Takaisin":
                         window.fill((0, 0, 0))
                     self.isPressed = True
@@ -91,12 +116,13 @@ class Button:
         else:
             self.isBeingHovered = False
 
-        
-        self.buttonSurface.blit(self.buttonText, [self.buttonRect.width/2 - self.buttonText.get_rect().width/2, self.buttonRect.height/2 - self.buttonText.get_rect().height/2])
+        self.buttonSurface.blit(self.buttonText, [self.buttonRect.width/2 - self.buttonText.get_rect(
+        ).width/2, self.buttonRect.height/2 - self.buttonText.get_rect().height/2])
         window.blit(self.buttonSurface, self.buttonRect)
 
     def getType(self):
         return "Button"
+
 
 class Slider:
     def __init__(self, x_pos, y_pos, width, height, type, settings, firstInit, sound_vol):
@@ -111,11 +137,11 @@ class Slider:
             self.value = 1.0
         else:
             if self.type == "sound":
-                self.value = settings.getVolume()[1]
+                self.value = settings.get_volume()[1]
             if self.type == "music":
-                self.value = settings.getVolume()[0]
+                self.value = settings.get_volume()[0]
             if self.type == "resolution":
-                res = settings.getResolution()
+                res = settings.get_resolution()
                 if res[0] == 640:
                     self.value = 0.0
                 if res[0] == 800:
@@ -142,11 +168,12 @@ class Slider:
         self.rect_circle = pygame.Rect(self.x, self.y-5, 20, 20)
         self.font = pygame.font.SysFont("Arial", 20)
         self.moved = False
-        self.sliderMoved = pygame.mixer.Sound(os.path.join(dirname, "assets", "button.wav"))
+        self.sliderMoved = pygame.mixer.Sound(
+            os.path.join(dirname, "assets", "button.wav"))
         self.sliderMoved.set_volume(sound_vol)
 
-    #Handles displaying and interaction of sliders
-    def display(self, window, mouse, mouseStatus):
+    # Handles displaying and interaction of sliders
+    def display(self, window, mouse, mouseStatus, player):
         newValue = False
         collide = self.rect_slider.collidepoint(mouse)
         if collide and not mouse[0] < self.x and not mouse[0] > self.x+200:
@@ -155,18 +182,18 @@ class Slider:
                 if not self.moved:
                     self.moved = True
                     pygame.mixer.Sound.play(self.sliderMoved)
-                    #print(self.x_circle)
+                    # print(self.x_circle)
             else:
                 if self.moved:
                     self.moved = False
                     pygame.mixer.Sound.play(self.sliderMoved)
                     newValue = True
-                    #print(self.x_circle)
+                    # print(self.x_circle)
             self.value = abs(self.x-self.x_circle)
             self.value = round((self.value*100/self.width)/100, 1)
-        
+
         self.x_circle = self.x+(20*(self.value*10))
-        #print(self.value)
+        # print(self.value)
         if self.type == "sound" or self.type == "music":
             value = self.value
             text = self.font.render(str(self.value), True, (255, 255, 255))
@@ -177,17 +204,19 @@ class Slider:
 
         window.blit(text, (self.x+250, self.y))
         pygame.draw.rect(window, (255, 255, 0), self.rect_slider)
-        pygame.draw.circle(window, (255, 255, 255), (self.x_circle, self.y+5), 10)
+        pygame.draw.circle(window, (255, 255, 255),
+                           (self.x_circle, self.y+5), 10)
         i = 0
         while i < 220:
-            pygame.draw.rect(window,(100, 100, 100), (self.x-2.5+i, self.y-10, 5, 30))
+            pygame.draw.rect(window, (100, 100, 100),
+                             (self.x-2.5+i, self.y-10, 5, 30))
             i += 20
 
         if newValue:
             newValue = False
             return (self.type)
 
-    #Returns slider value
+    # Returns slider value
     def getValue(self):
         if self.type == "sound" or self.type == "music":
             return self.value
@@ -214,6 +243,45 @@ class Slider:
                 return (1680, 1050)
             if self.value == 1.0:
                 return (1920, 1080)
-    
+
     def getType(self):
         return "Slider"
+
+
+class Icon:
+    def __init__(self, x_offset, y_offset, name):
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.name = name
+        self.font = pygame.font.SysFont("Arial", 20)
+
+    def display(self, window, mouse, mouseStatus, player):
+        scale = self.getScale(window)
+        x = (window.get_width()/2)+scale[0]*5+scale[0]
+        y = (window.get_height()/2)-scale[1]*5
+        if self.x_offset:
+            x = (window.get_width()/2)+scale[0]*7+scale[0]
+        if self.y_offset:
+            y = (window.get_height()/2)-scale[1]*5+scale[1]
+        pygame.draw.rect(window, (255, 255, 255), (x, y, scale[0], scale[1]))
+        turret = Turret(self.name)
+        text = self.font.render(str(turret.cost) + " $", True, (255, 255, 255))
+        window.blit(text, (x+scale[0]/4, y+scale[1]))
+        window.blit(pygame.transform.scale(
+            turret.turret_sprite, scale), (x, y))
+
+    def getScale(self, window):
+        width = window.get_width()
+        height = window.get_height()
+        # 4:3 aspect ratio
+        if width == 640 or width == 800 or width == 1024 or width == 1152 or (width == 1280 and height == 960):
+            return ((width/40)*2, (height/30)*2)
+        # 16:9 aspect ratio
+        if (width == 1280 and height == 720) or width == 1366 or width == 1600 or width == 1920:
+            return ((width/160)*8, (height/90)*8)
+        # 16:10 aspect ratio
+        else:
+            return ((width/160)*8, (height/100)*8)
+
+    def getType(self):
+        return "Icon"

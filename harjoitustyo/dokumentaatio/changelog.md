@@ -14,3 +14,6 @@
 ## Viikko 5
 - Asetukset toimivat
 - Luotu tiedosto, jolla luodaan karttoja peliin
+- Lisätty tekstuurit
+- Luotu luokat, joilla luodaan viholliset ja puolustusaseet
+- Luotu luokka, joka pitää kirjaa pelaajan rahasta, elämät ja nykyisestä kierroksesta
