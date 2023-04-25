@@ -7,3 +7,4 @@ Tämä **README**_-tiedosto_ kertoo harjoitustyöstä ja siihen liittyvistä asi
 - [Vaatimusmäärittely](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
 - [Changelog](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/changelog.md)
 - [Arkkitehtuuri (kesken)](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
+- [Release 1](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko5)
