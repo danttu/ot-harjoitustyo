@@ -8,7 +8,6 @@ from player import Player
 
 dirname = os.path.dirname(__file__)
 
-
 class Main:
     def __init__(self):
 
@@ -112,6 +111,4 @@ class Main:
         pygame.display.update()
         self.clock.tick(self.fps)
 
-
-if __name__ == "__main__":
-    Main()
+Main()
