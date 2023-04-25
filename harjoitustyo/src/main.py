@@ -1,4 +1,5 @@
 import os
+import sys
 import pygame
 from menu import Menu
 from settings import Settings
@@ -57,7 +58,7 @@ class Main:
     def event_handler(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                exit()
+                sys.exit(0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.mouse_button_held_down = True
             if event.type == pygame.MOUSEBUTTONUP:
@@ -73,7 +74,7 @@ class Main:
     def draw_screen(self):
         mouse_pos = pygame.mouse.get_pos()
         # Menu
-        if self.current_screen == "gameViewC" or self.current_screen == "gameview":
+        if self.current_screen in ("gameViewC","gameview"):
             self.map.draw_map(self.window)
         if self.current_screen == "settingsMenu":
             pygame.draw.rect(self.window, (10, 10, 10), (50, 50, self.window.get_width(
@@ -87,7 +88,7 @@ class Main:
                 if command == "Aloita Peli":
                     self.current_screen = "gameViewC"
                 if command == "Poistu pelistä":
-                    exit()
+                    sys.exit(0)
                 if command == "Takaisin":
                     self.current_screen = "mainMenu"
                 if command == "Valmis":
@@ -95,16 +96,16 @@ class Main:
                 if command == "Osta":
                     pass
                 if command == "Käytä":
-                    for o in self.menu_objects:
-                        if o[0].getType() == "Slider":
-                            if o[0].type == "sound":
-                                sound_vol = o[0].value
+                    for obj in self.menu_objects:
+                        if obj[0].getType() == "Slider":
+                            if obj[0].type == "sound":
+                                sound_vol = obj[0].value
                                 continue
-                            if o[0].type == "music":
-                                music_vol = o[0].value
+                            if obj[0].type == "music":
+                                music_vol = obj[0].value
                                 continue
-                            if o[0].type == "resolution":
-                                value = o[0].getValue()
+                            if obj[0].type == "resolution":
+                                value = obj[0].getValue()
                                 self.settings.set_resolution(value)
                                 self.changed = True
                     self.settings.set_volume(music_vol, sound_vol)

@@ -38,9 +38,7 @@ class Map:
         y = (window.get_height()/2)-scale[1]*5  # pylint: disable=invalid-name
         i = 0
         j = 0
-        while True:
-            if j > 9:
-                break
+        while j <= 9:
             if i > 9:
                 i = 0
                 j += 1
@@ -60,7 +58,8 @@ class Map:
         width = window.get_width()
         height = window.get_height()
         # 4:3 aspect ratio
-        if width == 640 or width == 800 or width == 1024 or width == 1152 or (width == 1280 and height == 960):
+        if (width == 640 or width == 800 or width == 1024 or
+            width == 1152 or (width == 1280 and height == 960)):
             return ((width/40)*2, (height/30)*2)
         # 16:9 aspect ratio
         if (width == 1280 and height == 720) or width == 1366 or width == 1600 or width == 1920:

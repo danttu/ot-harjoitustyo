@@ -35,15 +35,8 @@ class Enemies:
 
     def check_enemy_hp(self):
         for enemy in self.enemies:
-            if enemy.check_enemy_hp(enemy) == True:
+            if enemy.check_enemy_hp(enemy) is True:
                 self.remove_enemy(enemy)
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
-
-
-# Debug
-enemies = Enemies()
-print(enemies.enemies)
-enemy = Enemy("cannon", 100)
-enemies.add_enemy(enemy)
