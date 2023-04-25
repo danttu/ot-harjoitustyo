@@ -6,4 +6,4 @@ Tämä **README**_-tiedosto_ kertoo harjoitustyöstä ja siihen liittyvistä asi
 - [Työaikakirjanpito](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/tuntikirjanpito.md)
 - [Vaatimusmäärittely](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
 - [Changelog](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/changelog.md)
-- [Arkkitehtuuri](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
+- [Arkkitehtuuri (kesken)](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
