@@ -1,8 +1,8 @@
 import pygame
 import os
 from menu import Menu
-from menu import Slider
 from settings import Settings
+from map import Map
 
 dirname = os.path.dirname(__file__)
 
@@ -27,6 +27,9 @@ class Main:
         pygame.display.set_caption("Tower Defence")
         self.menu = Menu(self.resolution[0], self.resolution[1], self.settings, True, self.settings.getVolume()[1])
         self.menu_objects = self.menu.object
+
+        #Init map
+        self.map = Map()
 
         pygame.display.update()
         
@@ -53,11 +56,9 @@ class Main:
                 self.mouseButtonHeldDown = True
             if event.type == pygame.MOUSEBUTTONUP:
                 self.mouseButtonHeldDown = False
-            
-            #TBA Resolution change
-            #if event.type == pygame.VIDEORESIZE:
-                #print(event.size)
-                #self.changed = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE and self.currentScreen == "gameView":
+                    self.currentScreen = "mainMenu"
             if self.changed:
                 self.changed = False
                 self.changeResolution()
@@ -67,13 +68,15 @@ class Main:
         mousePos = pygame.mouse.get_pos()
         #Menu
         self.window.fill((0, 0, 0))
+        if self.currentScreen == "gameView":
+            self.map.drawMap(self.window)
         for object in self.menu_objects:
             if object[1] == self.currentScreen:
                 komento = object[0].display(self.window, mousePos, self.mouseButtonHeldDown)
                 if komento == "Asetukset":
                     self.currentScreen = "settingsMenu"
                 if komento == "Aloita Peli":
-                    #TBA
+                    self.currentScreen = "gameView"
                     pass
                 if komento == "Poistu pelistä":                    
                     exit()
