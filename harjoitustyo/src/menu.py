@@ -1,14 +1,17 @@
 import os
 import pygame
 from turrets import Turret
+from map import Map
 
 dirname = os.path.dirname(__file__)
 
 
 class Menu:
-    def __init__(self, width, height, settings, firstInit, sound_vol):
+    def __init__(self, width, height, settings, firstInit, sound_vol, player):
         self.font = pygame.font.SysFont("Arial", 20)
         self.object = []
+        self.selected_turret = ""
+        self.buy_button_created = False
         # Main Menu objects
         self.object.append((Button((width/2)-50, height/2, 100,
                            50, "Aloita Peli", self.font, sound_vol), "mainMenu"))
@@ -37,16 +40,62 @@ class Menu:
         self.object.append(
             (Label((width/2)-50, (height/2), "Resoluutio", 20), "settingsMenu"))
 
-        # Game objects when construct mode is true
+        # Game objects when game started and construct mode is true
         self.object.append((Button(width-150, height-150, 100,
                            50, "Valmis", self.font, sound_vol), "gameViewC"))
-        self.object.append((Button(width-150, height-250, 100,
-                           50, "Osta", self.font, sound_vol), "gameViewC"))
         self.object.append((Icon(False, False, "cannon"), "gameViewC"))
         self.object.append((Icon(True, False, "minigun"), "gameViewC"))
+        self.object.append(
+            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameViewC"))
+        self.object.append(
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameViewC"))
+        self.object.append(
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameViewC"))
+        
+        # Game objects when game started and construct mode is false
+        self.object.append(
+            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameView"))
+        self.object.append(
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameView"))
+        self.object.append(
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameView"))
+        self.already_pressed = False
+        
+    def allow_buy(self, window, sound_vol):
+        width = window.get_width()
+        height = window.get_height()
+        if self.selected_turret in ("cannon", "minigun"):
+            if not self.buy_button_created:
+                self.object.append((Button(width-150, height-250, 100,
+                           50, "Osta", self.font, sound_vol), "gameViewC"))
+                self.buy_button_created = True
 
-        self.alreadyPressed = False
-
+    def update_game_objects(self, window, sound_vol, player):
+        width = window.get_width()
+        height = window.get_height()
+        window.fill((0, 0, 0))
+        for object in self.object:
+            if object[1] in ("gameViewC", "gameView"):
+                self.object.remove(object)
+        # Game objects when game started and construct mode is true
+        self.object.append((Button(width-150, height-150, 100,
+                           50, "Valmis", self.font, sound_vol), "gameViewC"))
+        self.object.append((Icon(False, False, "cannon"), "gameViewC"))
+        self.object.append((Icon(True, False, "minigun"), "gameViewC"))
+        self.object.append(
+            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameViewC"))
+        self.object.append(
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameViewC"))
+        self.object.append(
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameViewC"))
+        
+        # Game objects when game started and construct mode is false
+        self.object.append(
+            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameView"))
+        self.object.append(
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameView"))
+        self.object.append(
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameView"))
 
 class Label:
     def __init__(self, x_pos, y_pos, text, font_size):
@@ -94,7 +143,7 @@ class Button:
 
     def display(self, window, mouse, mouseStatus, player):
         if not mouseStatus:
-            Menu.alreadyPressed = False
+            Menu.already_pressed = False
         self.buttonSurface.fill(self.buttonColors["unpressed"])
         if self.buttonRect.collidepoint(mouse):
             self.buttonSurface.fill(self.buttonColors["hovered"])
@@ -102,8 +151,8 @@ class Button:
                 self.isBeingHovered = True
                 pygame.mixer.Sound.play(self.buttonHoverSound)
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
-                if not self.isPressed and not Menu.alreadyPressed:
-                    Menu.alreadyPressed = True
+                if not self.isPressed and not Menu.already_pressed:
+                    Menu.already_pressed = True
                     if self.text == "Asetukset":
                         window.fill((0, 0, 0))
                     if self.text == "Takaisin":
@@ -111,6 +160,8 @@ class Button:
                     self.isPressed = True
                     pygame.mixer.Sound.play(self.buttonPressedSound)
                     return self.text
+                else:
+                    return ""
             else:
                 self.isPressed = False
         else:
@@ -119,6 +170,7 @@ class Button:
         self.buttonSurface.blit(self.buttonText, [self.buttonRect.width/2 - self.buttonText.get_rect(
         ).width/2, self.buttonRect.height/2 - self.buttonText.get_rect().height/2])
         window.blit(self.buttonSurface, self.buttonRect)
+        return ""
 
     def getType(self):
         return "Button"
@@ -182,18 +234,15 @@ class Slider:
                 if not self.moved:
                     self.moved = True
                     pygame.mixer.Sound.play(self.sliderMoved)
-                    # print(self.x_circle)
             else:
                 if self.moved:
                     self.moved = False
                     pygame.mixer.Sound.play(self.sliderMoved)
                     newValue = True
-                    # print(self.x_circle)
             self.value = abs(self.x-self.x_circle)
             self.value = round((self.value*100/self.width)/100, 1)
 
         self.x_circle = self.x+(20*(self.value*10))
-        # print(self.value)
         if self.type == "sound" or self.type == "music":
             value = self.value
             text = self.font.render(str(self.value), True, (255, 255, 255))
@@ -256,6 +305,7 @@ class Icon:
         self.font = pygame.font.SysFont("Arial", 20)
 
     def display(self, window, mouse, mouseStatus, player):
+        command = ""
         scale = self.getScale(window)
         x = (window.get_width()/2)+scale[0]*5+scale[0]
         y = (window.get_height()/2)-scale[1]*5
@@ -263,12 +313,23 @@ class Icon:
             x = (window.get_width()/2)+scale[0]*7+scale[0]
         if self.y_offset:
             y = (window.get_height()/2)-scale[1]*5+scale[1]
+        rect = pygame.Rect(x, y, scale[0], scale[1])
         pygame.draw.rect(window, (255, 255, 255), (x, y, scale[0], scale[1]))
         turret = Turret(self.name)
-        text = self.font.render(str(turret.cost) + " $", True, (255, 255, 255))
+        if turret.cost > player.get_money():
+            text = self.font.render(str(turret.cost) + " $", True, (255, 0, 0))
+        else:
+            text = self.font.render(str(turret.cost) + " $", True, (255, 255, 255))
+
+        if rect.collidepoint(mouse):
+            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                Menu.selected_turret = self.name
+                command = self.name
+
         window.blit(text, (x+scale[0]/4, y+scale[1]))
         window.blit(pygame.transform.scale(
             turret.turret_sprite, scale), (x, y))
+        return command
 
     def getScale(self, window):
         width = window.get_width()

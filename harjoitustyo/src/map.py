@@ -1,13 +1,20 @@
 import os
 import pygame
+from enemy import Enemies
+from enemy import Enemy
 
 dirname = dirname = os.path.dirname(__file__)
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, window):
         self.sprites = self.import_sprites()
         self.map = self.new_map()
+        self.enemies = Enemies()
+        self.start_tile = (self.find_start_tile(), 0)
+        enemy = Enemy("tank", 100, 1, self.get_scale(window),
+                    self.start_tile, window)
+        self.enemies.add_enemy(enemy)
 
     def import_sprites(self):
         pngs = []
@@ -52,7 +59,128 @@ class Map:
             window.blit(scaled_tile, (x, y))
             x += scale[0] # pylint: disable=invalid-name
             i += 1
-        pygame.display.update()
+
+    def turret_check_tile(self, window, mouse_pos):
+        scale = self.get_scale(window)
+        placable_tile = pygame.Rect(0, 0, 0, 0)
+        x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
+        y = (window.get_height()/2)-scale[1]*5  # pylint: disable=invalid-name
+        i = 0
+        j = 0
+        while j <= 9:
+            if i > 9:
+                i = 0
+                j += 1
+                x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
+                y += scale[1]  # pylint: disable=invalid-name
+                continue
+            tile = self.map[j][i]
+            if tile in (0, 1, 2):
+                placable_tile = pygame.Rect(x, y, scale[0], scale[1])
+            if placable_tile.collidepoint(mouse_pos):
+                return True
+            x += scale[0] # pylint: disable=invalid-name
+            i += 1
+        return False
+    
+    def enemy_check_tile(self, enemy, window):
+        find_new = False
+        scale = self.get_scale(window)
+        placable_tile = pygame.Rect(0, 0, 0, 0)
+        current_tile = (0, 0)
+        x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
+        y = (window.get_height()/2)-scale[1]*5  # pylint: disable=invalid-name
+        i = 0
+        j = 0
+        while j <= 9:
+            if i > 9:
+                i = 0
+                j += 1
+                x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
+                y += scale[1]  # pylint: disable=invalid-name
+                continue
+            tile = self.map[j][i]
+            if tile in (0, 1, 2):
+                placable_tile = pygame.Rect(x, y, scale[0], scale[1])
+            if placable_tile.colliderect(enemy.rect):
+                find_new = True
+                if enemy.move_down:
+                    current_tile = (i, j-1)
+                    enemy.y_pos -= enemy.speed
+                if enemy.move_up:
+                    current_tile = (i, j+1)
+                    enemy.y_pos += enemy.speed
+                if enemy.move_right:
+                    current_tile = (i-1, j)
+                    enemy.x_pos -= enemy.speed
+                if enemy.move_left:
+                    current_tile = (i+1, j)
+                    enemy.x_pos += enemy.speed
+                break
+            x += scale[0] # pylint: disable=invalid-name
+            i += 1
+        
+        # Find next road tile
+        if find_new:
+            try:
+                up_tile = self.map[current_tile[1]-1][current_tile[0]]
+            except IndexError:
+                up_tile = 0
+            try:
+                down_tile = self.map[current_tile[1]+1][current_tile[0]]
+            except IndexError:
+                down_tile = 0
+            try:
+                right_tile = self.map[current_tile[1]][current_tile[0]+1]
+            except IndexError:
+                right_tile = 0
+            try:
+                left_tile = self.map[current_tile[1]][current_tile[0]-1]
+            except IndexError:
+                left_tile = 0
+            if enemy.move_down:
+                if right_tile == 3:
+                    enemy.move_down = False
+                    enemy.move_right = True
+                if left_tile == 3:
+                    enemy.move_down = False
+                    enemy.move_left = True
+                enemy.already_turned = False
+            elif enemy.move_up:
+                if right_tile == 3:
+                    enemy.move_up = False
+                    enemy.move_right = True
+                if left_tile == 3:
+                    enemy.move_up = False
+                    enemy.move_left = True
+                enemy.already_turned = False
+            elif enemy.move_right:
+                if up_tile == 3:
+                    enemy.move_up = True
+                    enemy.move_right = False
+                if down_tile == 3:
+                    enemy.move_down = True
+                    enemy.move_right = False
+                enemy.already_turned = False
+            else: 
+                if up_tile == 3:
+                    enemy.move_up = True
+                    enemy.move_left = False
+                if down_tile == 3:
+                    enemy.move_down = True
+                    enemy.move_left = False 
+                enemy.already_turned = False
+    def find_start_tile(self):
+        # First road tile is start_tile
+        i = 0
+        for tile in self.map[0]:
+            if tile == 3:
+                return i
+            i += 1
+        return 0
+
+    def get_start_tile(self):
+        return self.start_tile  
 
     def get_scale(self, window):
         width = window.get_width()

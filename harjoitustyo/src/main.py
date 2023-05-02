@@ -22,22 +22,21 @@ class Main:
         self.changed = False
         # Main menu: mainMenu, Settings: settingsMenu, Game: gameView
         self.current_screen = "mainMenu"
+        # Init player
+        self.player = Player()
 
         pygame.init()
         # Init menu and window
         self.window = pygame.display.set_mode(self.resolution)
         pygame.display.set_caption("Tower Defence")
         self.menu = Menu(self.resolution[0], self.resolution[1],
-                         self.settings, True, self.settings.get_volume()[1])
+                         self.settings, True, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
-
-        # Init player
-        self.player = Player()
+       
         # Init map
-        self.map = Map()
+        self.map = Map(self.window)
         self.construct_mode = True
 
-        pygame.display.update()
         # Starting gameloop
         self.run_game()
 
@@ -46,11 +45,12 @@ class Main:
         pygame.display.quit()
         self.window = pygame.display.set_mode(self.resolution)
         self.menu = Menu(self.resolution[0], self.resolution[1],
-                         self.settings, False, self.settings.get_volume()[1])
+                         self.settings, False, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
 
     def run_game(self):
         while True:
+            self.window.fill((0, 0, 0))
             self.event_handler()
             self.draw_screen()
 
@@ -63,17 +63,35 @@ class Main:
             if event.type == pygame.MOUSEBUTTONUP:
                 self.mouse_button_held_down = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE and self.current_screen == "gameViewC":
+                if event.key == pygame.K_ESCAPE and self.current_screen in ("gameViewC", "gameView"):
                     self.current_screen = "mainMenu"
                     self.window.fill((0, 0, 0))
-            if self.changed:
+        if self.changed:
                 self.changed = False
                 self.change_resolution()
+        if self.current_screen == "gameView":
+                remove_enemy = False
+                for enemy in self.map.enemies.enemies:
+                    for turret in self.player.turrets.turrets:
+                        if turret.check_if_enemy_in_range(enemy):
+                            if enemy.take_hit(turret.damage):
+                                remove_enemy = True
+                    if remove_enemy:
+                        self.map.enemies.remove_enemy(enemy)
+                        remove_enemy = False
+                        continue
+                    self.map.enemy_check_tile(enemy, self.window)
+                    enemy.move_enemy()
+    
+    def get_scale(self):
+        scale = self.map.get_scale(self.window)
+        return scale
 
     def draw_screen(self):
+        #self.window.fill((0, 0, 0))
         mouse_pos = pygame.mouse.get_pos()
         # Menu
-        if self.current_screen in ("gameViewC","gameview"):
+        if self.current_screen in ("gameViewC", "gameView"):
             self.map.draw_map(self.window)
         if self.current_screen == "settingsMenu":
             pygame.draw.rect(self.window, (10, 10, 10), (50, 50, self.window.get_width(
@@ -85,15 +103,25 @@ class Main:
                 if command == "Asetukset":
                     self.current_screen = "settingsMenu"
                 if command == "Aloita Peli":
+                    self.window.fill((0, 0, 0))
                     self.current_screen = "gameViewC"
                 if command == "Poistu pelistä":
                     sys.exit(0)
                 if command == "Takaisin":
                     self.current_screen = "mainMenu"
                 if command == "Valmis":
+                    self.window.fill((0, 0, 0))
                     self.current_screen = "gameView"
+                if command in ("cannon", "minigun"):
+                    self.menu.selected_turret = command
+                    self.menu.allow_buy(self.window, self.settings.get_volume()[1])
                 if command == "Osta":
-                    pass
+                    self.window.fill((0, 0, 0))
+                    if self.player.buy_turret(self.menu.selected_turret):
+                        self.menu.update_game_objects(self.window, self.settings.get_volume()[1],
+                                          self.player)
+                    else:
+                        print("Sinulla ei ole tarpeeksi rahaa!")
                 if command == "Käytä":
                     for obj in self.menu_objects:
                         if obj[0].getType() == "Slider":
@@ -108,7 +136,15 @@ class Main:
                                 self.settings.set_resolution(value)
                                 self.changed = True
                     self.settings.set_volume(music_vol, sound_vol)
+        #Turrets
+        if self.current_screen in ("gameViewC", "gameView"):
+            for turret in self.player.turrets.get_turrets():
+                turret.draw_turret(self.window, mouse_pos)
+        #Enemies
+        if self.current_screen is "gameView":
+            for enemy in self.map.enemies.enemies:
+                enemy.draw_enemy(self.window)
+
         pygame.display.update()
         self.clock.tick(self.fps)
-
 Main()

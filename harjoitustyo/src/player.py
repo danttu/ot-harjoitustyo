@@ -1,10 +1,11 @@
 from turrets import Turrets
+from turrets import Turret
 
 
 class Player:
     def __init__(self):
-        self.hp = 250  # pylint: disable=invalid-name
-        self.money = 100  # pylint: disable=invalid-name
+        self.health = 250  
+        self.money = 1000  # pylint: disable=invalid-name
         self.current_round = 1
         self.turrets = Turrets()
 
@@ -23,19 +24,33 @@ class Player:
         self.money -= amount
         return True
 
+    def buy_turret(self, turret_name):
+        turret = Turret(turret_name)
+        #if money removal is successful add turret to player owned turrets and return True
+        if self.remove_money(turret.cost):
+            self.turrets.add_turret(turret)
+            return True
+        return False
+
     def take_hit(self, hitpoints):
         # If negative, change to zero
         hitpoints = max(hitpoints, 0)
-        # If damage is bigger than players hp, make player's hp to zero
+        # If damage is bigger than players health, make player's health to zero
         # and return True for gameOver check
-        if self.hp < hitpoints:
-            self.hp = 0  # pylint: disable=invalid-name
+        if self.health < hitpoints:
+            self.health = 0  
             return True
-        self.hp -= hitpoints
+        self.health -= hitpoints
         return False
 
     def get_current_round(self):
         return self.current_round
+    
+    def get_money(self):
+        return self.money
+    
+    def get_health(self):
+        return self.health
 
     def next_round(self):
         self.current_round += 1
