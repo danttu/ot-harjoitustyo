@@ -6,23 +6,23 @@ Peli on *reaaliaikainen Tower Defence* peli, jossa puolustetaan omaa tukikohtaa 
 ## Perusversion tarjoama toiminnallisuus
 
 ### Päävalikko
-- Kun käynnistää pelin niin peli näyttää päävalikon
+- Kun käynnistää pelin niin peli näyttää päävalikon *Tehty*
 - Päävalikossa on seuraavat kohdat:
-  - Aloita peli
+  - Aloita peli *Tehty*
     - *Tämän valittua pelaaja pääsee aloittamaan pelin*
-  - Asetukset
+  - Asetukset *Tehty*
     - *Tässä näkymässä tulee olemaan pelin asetukset, jossa voi säätää esimerkiksi äänenvoimakkuutta tai vaihtaa ikkunan resoluutiota*
-  - Poistu pelistä
+  - Poistu pelistä *Tehty*
     - *Sulkee pelin*
 
 ### Peli
 - Kun pelaaja aloittaa pelin:
-  - Pelaaja on **suunnitteluvaiheessa**, jossa pelaaja pääsee suunnittelemaan omaa puolustusta
+  - Pelaaja on **suunnitteluvaiheessa**, jossa pelaaja pääsee suunnittelemaan omaa puolustusta *Tehty*
     - *Tässä vaiheessa viholliset eivät tule*
-  - Näytöllä näkyy pelikenttä, tukikohdan elämät, nykyinen kierros ja rahamäärä
-  - Näytöllä on myös valikko, mistä pelaaja voi valita puolustusaseet ja *Valmis*-nappi, jota painetaan siirtyäkseen **puolustusvaiheeseen**
+  - Näytöllä näkyy pelikenttä, tukikohdan elämät, nykyinen kierros ja rahamäärä *Tehty*
+  - Näytöllä on myös valikko, mistä pelaaja voi valita puolustusaseet ja *Valmis*-nappi, jota painetaan siirtyäkseen **puolustusvaiheeseen** *Tehty*
 - Kun *Valmis*-nappi on painettu:
-  - Pelaaja on **puolustusvaiheessa** ja vihollisten hyökkäys alkaa
+  - Pelaaja on **puolustusvaiheessa** ja vihollisten hyökkäys alkaa *Tehty*
   - Jos nykyisen kierroksen kaikki viholliset ovat päihitetty siirtyy pelaaja takaisin **suunnitteluvaiheeseen** suunnittelemaan puolustusta seuraavaa kierrosta varten
   - Jos vihollinen onnistuu tuhoamaan pelaajan tukikohdan niin pelaaja siirtyy **lopputulosruutuun**
 - Lopputulosruutu:
@@ -31,4 +31,8 @@ Peli on *reaaliaikainen Tower Defence* peli, jossa puolustetaan omaa tukikohtaa 
   - Jos pelaaja painaa *Poistu päävalikkoon*-nappia, pelaaja siirtyy **päävalikkoon**.
 
 ## Jatkokehitysideoita
-**TBA**
+- Paremmat tekstuurit
+- Lisää karttoja
+- Lisää vihollisia ja puolustusaseita
+- Paremmat äänet
+- Musiikkia
