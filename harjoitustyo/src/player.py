@@ -35,9 +35,9 @@ class Player:
     def take_hit(self, hitpoints):
         # If negative, change to zero
         hitpoints = max(hitpoints, 0)
-        # If damage is bigger than players health, make player's health to zero
+        # If damage is bigger than or same as player's health, make player's health to zero
         # and return True for gameOver check
-        if self.health < hitpoints:
+        if self.health <= hitpoints:
             self.health = 0  
             return True
         self.health -= hitpoints
