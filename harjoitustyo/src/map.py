@@ -3,7 +3,7 @@ import pygame
 from enemy import Enemies
 from enemy import Enemy
 
-dirname = dirname = os.path.dirname(__file__)
+dirname = os.path.dirname(__file__)
 
 
 class Map:

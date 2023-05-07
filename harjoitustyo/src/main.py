@@ -36,6 +36,7 @@ class Main:
         # Init map
         self.map = Map(self.window)
         self.construct_mode = True
+        self.scale = self.get_scale()
 
         # Starting gameloop
         self.run_game()
@@ -44,6 +45,9 @@ class Main:
         self.resolution = self.settings.get_resolution()
         pygame.display.quit()
         self.window = pygame.display.set_mode(self.resolution)
+        self.scale = self.get_scale()
+        self.map = Map(self.window)
+        self.player = Player()
         self.menu = Menu(self.resolution[0], self.resolution[1],
                          self.settings, False, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
@@ -124,7 +128,7 @@ class Main:
                         print("Sinulla ei ole tarpeeksi rahaa!")
                 if command == "Käytä":
                     for obj in self.menu_objects:
-                        if obj[0].getType() == "Slider":
+                        if obj[0].get_type() == "Slider":
                             if obj[0].type == "sound":
                                 sound_vol = obj[0].value
                                 continue
@@ -132,7 +136,7 @@ class Main:
                                 music_vol = obj[0].value
                                 continue
                             if obj[0].type == "resolution":
-                                value = obj[0].getValue()
+                                value = obj[0].get_value()
                                 self.settings.set_resolution(value)
                                 self.changed = True
                     self.settings.set_volume(music_vol, sound_vol)
