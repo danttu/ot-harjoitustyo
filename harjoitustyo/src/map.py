@@ -7,13 +7,30 @@ dirname = os.path.dirname(__file__)
 
 
 class Map:
+    """Game's map.
+    
+    Attributes:
+        sprites: List of sprites used to draw map.
+        map: List of lists containing map tiles.
+        enemies: List of current round enemies.
+        start_tile: Starting tile for enemies to spawn.
+    """
     def __init__(self):
+        """Map initialization."""
         self.sprites = self.import_sprites()
         self.map = self.new_map()
         self.enemies = Enemies()
         self.start_tile = (self.find_start_tile(), 0)
 
     def add_enemies(self, current_round, window, i, sound_vol):
+        """Adds enemies.
+        
+        Args:
+            current_round: Game's current round.
+            window: Game's window.
+            i: Tells the order of enemy.
+            sound_vol: Game's sound volume value.
+        """
         enemy_hp = 100+20*current_round
         enemy_speed = 1+0.1*current_round
         enemy = Enemy("tank", enemy_hp, enemy_speed, self.get_scale(window),
@@ -22,6 +39,11 @@ class Map:
         
 
     def import_sprites(self):
+        """Imports sprites.
+        
+        Returns:
+            List of images that were found.
+        """
         pngs = []
         for name in ["grass", "flower", "flowers", "dirt", "base"]:
             try:
@@ -32,6 +54,15 @@ class Map:
         return pngs
 
     def new_map(self):
+        """Creates new map for game.
+        
+        Map is collection of lists that contain information about tiles.
+        Numbers represent tile type that is used when drawing map or
+        checking tile type.
+        
+        Returns:
+            Map or in other words list of lists containing map tiles.
+        """
         map = [[0, 0, 3, 0, 0, 0, 2, 0, 1, 0],
                [0, 1, 3, 0, 0, 0, 0, 1, 0, 0],
                [0, 0, 3, 3, 3, 3, 3, 3, 3, 2],
@@ -45,6 +76,11 @@ class Map:
         return map
 
     def draw_map(self, window):
+        """Draws map.
+        
+        Args:
+            window: Game's window.
+        """
         scale = self.get_scale(window)
         x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
         y = (window.get_height()/2)-scale[1]*5  # pylint: disable=invalid-name
@@ -69,6 +105,18 @@ class Map:
             i += 1
 
     def turret_check_tile(self, window, mouse_pos):
+        """Check tiles for turret placement.
+        
+        Firstly checks what tile mouse is hovering over.
+        Then it checks whether tile is suitable for turret placement. 
+        
+        Args:
+            window: Game's window.
+            mouse_pos: Position of mouse cursor.
+        
+        Returns:
+            True if mouse is hovering over tile that is defined turret placable. Else returns false.
+        """
         scale = self.get_scale(window)
         placable_tile = pygame.Rect(0, 0, 0, 0)
         x = (window.get_width()/2)-scale[0]*5  # pylint: disable=invalid-name
@@ -92,6 +140,17 @@ class Map:
         return False
     
     def enemy_check_tile(self, enemy, window):
+        """Check tiles for enemy movement.
+        
+        Firstly checks what tile enemy hitbox is colliding with.
+        Then it moves enemy backward to stop collision and finds new road tile
+        and changes enemy direction to follow road. Stops enemy movement if at
+        base.
+        
+        Args:
+            enemy: Enemy object.
+            window: Game's window.
+        """
         find_new = False
         scale = self.get_scale(window)
         placable_tile = pygame.Rect(0, 0, 0, 0)
@@ -183,7 +242,11 @@ class Map:
                     enemy.move_left = False 
                 enemy.already_turned = False
     def find_start_tile(self):
-        # First road tile is start_tile
+        """Finds first road tile starting from top left.
+        
+        Returns:
+            returns first road tile from first row. Else returns zero.
+        """
         i = 0
         for tile in self.map[0]:
             if tile == 3:
@@ -192,17 +255,16 @@ class Map:
         return 0
 
     def get_start_tile(self):
+        """Gives start_tile value."""
         return self.start_tile  
 
     def get_scale(self, window):
+        """Gives scale based on resolution and aspect ratio."""
         width = window.get_width()
         height = window.get_height()
-        # 4:3 aspect ratio
         if (width == 640 or width == 800 or width == 1024 or
             width == 1152 or (width == 1280 and height == 960)):
             return ((width/40)*2, (height/30)*2)
-        # 16:9 aspect ratio
         if (width == 1280 and height == 720) or width == 1366 or width == 1600 or width == 1920:
             return ((width/160)*8, (height/90)*8)
-        # 16:10 aspect ratio
         return ((width/160)*8, (height/100)*8)
