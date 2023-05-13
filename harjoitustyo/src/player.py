@@ -6,7 +6,10 @@ class Player:
     def __init__(self):
         self.health = 250  
         self.money = 1000  # pylint: disable=invalid-name
+        # Current round limit is 250,
+        # after that enemies have too much speed that they get stuck
         self.current_round = 1
+        self.destroyed_enemies = 0
         self.turrets = Turrets()
 
     def add_money(self, amount):
@@ -24,8 +27,8 @@ class Player:
         self.money -= amount
         return True
 
-    def buy_turret(self, turret_name):
-        turret = Turret(turret_name)
+    def buy_turret(self, turret_name, sound_vol, window):
+        turret = Turret(turret_name, sound_vol, window)
         #if money removal is successful add turret to player owned turrets and return True
         if self.remove_money(turret.cost):
             self.turrets.add_turret(turret)
@@ -51,6 +54,12 @@ class Player:
     
     def get_health(self):
         return self.health
+    
+    def add_destroyed_enemy(self):
+        self.destroyed_enemies += 1
+
+    def get_destroyed_enemies(self):
+        return self.destroyed_enemies
 
     def next_round(self):
         self.current_round += 1

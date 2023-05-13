@@ -14,88 +14,79 @@ class Menu:
         self.buy_button_created = False
         # Main Menu objects
         self.object.append((Button((width/2)-50, height/2, 100,
-                           50, "Aloita Peli", self.font, sound_vol), "mainMenu"))
+                           50, "Aloita Peli", self.font, sound_vol), "main_menu"))
         self.object.append((Button((width/2)-50, (height/2)+75,
-                           100, 50, "Asetukset", self.font, sound_vol), "mainMenu"))
+                           100, 50, "Asetukset", self.font, sound_vol), "main_menu"))
         self.object.append((Button((width/2)-50, (height/2)+150, 100,
-                           50, "Poistu pelistä", self.font, sound_vol), "mainMenu"))
+                           50, "Poistu pelistä", self.font, sound_vol), "main_menu"))
         self.object.append(
-            (Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "mainMenu"))
+            (Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "main_menu"))
 
         # Settings Menu objects
         self.object.append((Button((width/2)-100, (height/2)+150, 100,
-                           50, "Takaisin", self.font, sound_vol), "settingsMenu"))
+                           50, "Takaisin", self.font, sound_vol), "settings_menu"))
         self.object.append((Button((width/2)+100, (height/2)+150,
-                           100, 50, "Käytä", self.font, sound_vol), "settingsMenu"))
+                           100, 50, "Käytä", self.font, sound_vol), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)-160, 200,
-                           10, "music", settings, first_init, sound_vol), "settingsMenu"))
+                           10, "music", settings, first_init, sound_vol), "settings_menu"))
         self.object.append(
-            (Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settingsMenu"))
+            (Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)-60, 200,
-                           10, "sound", settings, first_init, sound_vol), "settingsMenu"))
+                           10, "sound", settings, first_init, sound_vol), "settings_menu"))
         self.object.append(
-            (Label((width/2)-50, (height/2)-100, "Ääni", 20), "settingsMenu"))
+            (Label((width/2)-50, (height/2)-100, "Ääni", 20), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10,
-                           "resolution", settings, first_init, sound_vol), "settingsMenu"))
+                           "resolution", settings, first_init, sound_vol), "settings_menu"))
         self.object.append(
-            (Label((width/2)-50, (height/2), "Resoluutio", 20), "settingsMenu"))
+            (Label((width/2)-50, (height/2), "Resoluutio", 20), "settings_menu"))
 
         # Game objects when game started and construct mode is true
         self.object.append((Button(width-150, height-150, 100,
-                           50, "Valmis", self.font, sound_vol), "gameViewC"))
-        self.object.append((Icon(False, False, "cannon"), "gameViewC"))
-        self.object.append((Icon(True, False, "minigun"), "gameViewC"))
+                           50, "Valmis", self.font, sound_vol), "construction_view"))
+        self.object.append((Icon(False, False, "cannon"), "construction_view"))
+        self.object.append((Icon(True, False, "minigun"), "construction_view"))
         self.object.append(
-            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameViewC"))
+            (Label(width-150, 20, "Rahaa: " + str(player.get_money()), 20), "construction_view"))
         self.object.append(
-            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameViewC"))
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "construction_view"))
         self.object.append(
-            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameViewC"))
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "construction_view"))
         
         # Game objects when game started and construct mode is false
         self.object.append(
-            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameView"))
+            (Label(width-150, 20, "Rahaa: " + str(player.get_money()), 20), "game_view"))
         self.object.append(
-            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameView"))
+            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "game_view"))
         self.object.append(
-            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameView"))
+            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "game_view"))
         self.already_pressed = False
-        
+
+       # Game over screen
+        self.object.append(
+            (Label(width/2-50, 125,
+                    "Peli päättyi!", 32), "results_view"))
+        self.object.append(
+            (Label(width/2-50, 175,
+                    "Pääsit kierrokselle " + str(player.get_current_round()), 20), "results_view"))
+        self.object.append(
+            (Label(width/2-50, 200,
+                    "Rahamäärä: " + str(player.get_money()), 20), "results_view"))
+        self.object.append(
+            (Label(width/2-50, 225,
+                    "Vihollisia tuhottu yhteensä: " + str(player.get_destroyed_enemies()), 20), "results_view"))
+        self.object.append((Button((width/2)-50, height/2+50, 150,
+                           35, "Aloita uusi peli", self.font, sound_vol), "results_view"))
+        self.object.append((Button((width/2)-50, (height/2)+100, 150,
+                           35, "Poistu päävalikkoon", self.font, sound_vol), "results_view"))
+
     def allow_buy(self, window, sound_vol):
         width = window.get_width()
         height = window.get_height()
         if self.selected_turret in ("cannon", "minigun"):
             if not self.buy_button_created:
                 self.object.append((Button(width-150, height-250, 100,
-                           50, "Osta", self.font, sound_vol), "gameViewC"))
+                           50, "Osta", self.font, sound_vol), "construction_view"))
                 self.buy_button_created = True
-
-    def update_game_objects(self, window, sound_vol, player):
-        width = window.get_width()
-        height = window.get_height()
-        window.fill((0, 0, 0))
-        for object in self.object:
-            if object[1] in ("gameViewC", "gameView"):
-                self.object.remove(object)
-        # Game objects when game started and construct mode is true
-        self.object.append((Button(width-150, height-150, 100,
-                           50, "Valmis", self.font, sound_vol), "gameViewC"))
-        self.object.append((Icon(False, False, "cannon"), "gameViewC"))
-        self.object.append((Icon(True, False, "minigun"), "gameViewC"))
-        self.object.append(
-            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameViewC"))
-        self.object.append(
-            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameViewC"))
-        self.object.append(
-            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameViewC"))
-        
-        # Game objects when game started and construct mode is false
-        self.object.append(
-            (Label(width-100, 20, "Rahaa: " + str(player.get_money()), 20), "gameView"))
-        self.object.append(
-            (Label(100, 20, "Elämät: " + str(player.get_health()), 20), "gameView"))
-        self.object.append(
-            (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "gameView"))
 
 class Label:
     def __init__(self, x_pos, y_pos, text, font_size):
@@ -315,7 +306,7 @@ class Icon:
             y = (window.get_height()/2)-scale[1]*5+scale[1]
         rect = pygame.Rect(x, y, scale[0], scale[1])
         pygame.draw.rect(window, (255, 255, 255), (x, y, scale[0], scale[1]))
-        turret = Turret(self.name)
+        turret = Turret(self.name, 1.0, window)
         if turret.cost > player.get_money():
             text = self.font.render(str(turret.cost) + " $", True, (255, 0, 0))
         else:

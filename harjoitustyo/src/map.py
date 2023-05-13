@@ -7,18 +7,23 @@ dirname = os.path.dirname(__file__)
 
 
 class Map:
-    def __init__(self, window):
+    def __init__(self):
         self.sprites = self.import_sprites()
         self.map = self.new_map()
         self.enemies = Enemies()
         self.start_tile = (self.find_start_tile(), 0)
-        enemy = Enemy("tank", 100, 1, self.get_scale(window),
-                    self.start_tile, window)
+
+    def add_enemies(self, current_round, window, i, sound_vol):
+        enemy_hp = 100+20*current_round
+        enemy_speed = 1+0.1*current_round
+        enemy = Enemy("tank", enemy_hp, enemy_speed, self.get_scale(window),
+                (self.start_tile[0], self.start_tile[1]-i), window, i, sound_vol)
         self.enemies.add_enemy(enemy)
+        
 
     def import_sprites(self):
         pngs = []
-        for name in ["grass", "flower", "flowers", "dirt"]:
+        for name in ["grass", "flower", "flowers", "dirt", "base"]:
             try:
                 pngs.append(pygame.image.load(
                     os.path.join(dirname, "assets", name + ".png")))
@@ -31,7 +36,7 @@ class Map:
                [0, 1, 3, 0, 0, 0, 0, 1, 0, 0],
                [0, 0, 3, 3, 3, 3, 3, 3, 3, 2],
                [0, 0, 0, 0, 0, 0, 0, 0, 3, 0],
-               [3, 3, 3, 3, 3, 3, 3, 0, 3, 0],
+               [4, 3, 3, 3, 3, 3, 3, 0, 3, 0],
                [0, 0, 0, 0, 0, 0, 3, 0, 3, 1],
                [0, 2, 1, 0, 3, 3, 3, 1, 3, 0],
                [0, 0, 0, 0, 3, 0, 0, 0, 3, 0],
@@ -55,7 +60,10 @@ class Map:
                 continue
             tile = self.map[j][i]
             scaled_tile = self.sprites[tile]
-            scaled_tile = pygame.transform.scale(scaled_tile, scale)
+            if tile == 4:
+                scaled_tile = pygame.transform.scale(scaled_tile, scale)
+            else:
+                scaled_tile = pygame.transform.scale(scaled_tile, scale)
             window.blit(scaled_tile, (x, y))
             x += scale[0] # pylint: disable=invalid-name
             i += 1
@@ -100,9 +108,13 @@ class Map:
                 y += scale[1]  # pylint: disable=invalid-name
                 continue
             tile = self.map[j][i]
-            if tile in (0, 1, 2):
+            if tile in (0, 1, 2, 4):
                 placable_tile = pygame.Rect(x, y, scale[0], scale[1])
             if placable_tile.colliderect(enemy.rect):
+                # If enemy makes contact with base take damage every two second
+                if tile == 4:
+                    enemy.enemy_at_base = True
+                    break
                 find_new = True
                 if enemy.move_down:
                     current_tile = (i, j-1)
