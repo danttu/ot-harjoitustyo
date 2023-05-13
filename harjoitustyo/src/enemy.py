@@ -5,6 +5,31 @@ dirname = os.path.dirname(__file__)
 
 
 class Enemy:
+    """Enemy object.
+    
+    Attributes:
+        name: Enemy's name.
+        id: Enemy order in current round.
+        hp: Enemy's current health.
+        full_hp: Enemy's max value of hp.
+        sprite: Enemy's sprite.
+        start_tile: A tile from where enemy will spawn.
+        scale: Scale used to match map and window resolution.
+        speed: enemy's movement speed.
+        x_pos: enemy's x position.
+        y_pos: enemy's y position.
+        scaled_sprite: Scaled sprite to match map and window resolution.
+        rect: Enemy hitbox.
+        destroyed_sound: Sound that plays when enemy is destroyed.
+        current_rot: Tells enemy current rotation angle.
+        already_turned: Defines whether enemy was rotated.
+        enem_at_base: Defines if enemy at player's base.
+        last_shot: Time for when last shot was made.
+        move_down: Defines if enemy should move down.
+        move_right: Defines if enemy should move right.
+        move_left: Defines if enemy should move left.
+        move_up: Defines if enemy should move up.
+    """
     def __init__(self, name, hp, speed, scale, start_tile, window, id, sound_vol):  # pylint: disable=invalid-name
         self.name = name
         self.id = id
