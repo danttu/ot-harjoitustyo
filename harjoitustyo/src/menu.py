@@ -7,7 +7,25 @@ dirname = os.path.dirname(__file__)
 
 
 class Menu:
+    """Game UI.
+    
+    Attributes:
+        font: Font for text in buttons and labels.
+        object: List of UI objects
+        buy_button_created: Defines if "buy" button has been created.
+        already_pressed: Defines if button was already pressed.
+    """
     def __init__(self, width, height, settings, first_init, sound_vol, player):
+        """UI initialization.
+        
+        Args:
+            width: Window width.
+            height: Window height.
+            settings: Game settings.
+            first_init: Defines if it's first time initializing object.
+            sound_vol: Game's sound volume value.
+            player: Player object.
+        """
         self.font = pygame.font.SysFont("Arial", 20)
         self.object = []
         self.selected_turret = ""
@@ -89,7 +107,24 @@ class Menu:
                 self.buy_button_created = True
 
 class Label:
+    """Text object.
+    
+    Attributes:
+        x: Text's x position.
+        y: Text's y position.
+        font: Text font.
+        color: Text color.
+        text: String of text.
+    """
     def __init__(self, x_pos, y_pos, text, font_size):
+        """Label initialization.
+        
+        Args:
+            x_pos: X position for label.
+            y_pos: Y posiion for label.
+            text: String of text for label.
+            font_size: Label size.
+        """
         self.x = x_pos
         self.y = y_pos
         self.font = pygame.font.SysFont("Arial", font_size)
@@ -98,14 +133,56 @@ class Label:
         self.text = self.font.render(text, True, self.color)
 
     def display(self, window, mouse, mouse_status, player):
+        """Handles label draw.
+        
+        Args:
+            window: Game's window.
+            mouse: Mouse position.
+            mouse_status: Defines if mouse button is held down.
+            player: Player object.
+        """
         window.blit(self.text, (self.x, self.y))
 
     def get_type(self):
+        """Returns type of object.
+        
+        Returns:
+            Returns name of object.
+        """
         return "Label"
 
 
 class Button:
+    """Button object.
+    
+    Attributes:
+        x: Button x position.
+        y: Button y position.
+        width: Button width.
+        height: Button height.
+        text: Button's text.
+        font: Button's text font.
+        is_being_hovered: Defines if mouse hovers over button.
+        is_pressed: Defines if button is pressed.
+        button_hover_sound: Sound for when mouse hovers over button.
+        button_pressed_sound: Sound for when button is pressed.
+        button_surface: Surface for button.
+        buttonRect: Button rectangle.
+        buttonText: Text for button.
+        buttonColors: A dict list of color values for different button states. 
+    """
     def __init__(self, x_pos, y_pos, width, height, text, font, sound_vol):
+        """Button initialization.
+        
+        Args:
+            x_pos: X position for button.
+            y_pos: Y position for button.
+            width: Width value for button.
+            height: Height value for button.
+            text: Text string for button.
+            font: Text font for button.
+            sound_vol: Game's sound volume value for button sounds.
+        """
         self.x = x_pos
         self.y = y_pos
         self.width = width
@@ -133,6 +210,17 @@ class Button:
         }
 
     def display(self, window, mouse, mouse_status, player):
+        """Handles drawing button and button events.
+        
+        Args:
+            window: Game's window.
+            mouse: Mouse position.
+            mouse_status: Defines if mouse button is held down.
+            player: Player object.
+        
+        Returns:
+            Button text if button was pressed. Else it will return empty string.
+        """
         if not mouse_status:
             Menu.already_pressed = False
         self.button_surface.fill(self.buttonColors["unpressed"])
@@ -164,11 +252,45 @@ class Button:
         return ""
 
     def get_type(self):
+        """Returns type of object.
+        
+        Returns:
+            Returns name of object.
+        """
         return "Button"
 
 
 class Slider:
+    """Slider object.
+    
+    Slider for changing settings.
+    Attributes:
+        x: Slider's x position.
+        y: Slider's y position.
+        x_circle: Slider's circle x position.
+        width: Slider's width.
+        height: Slider's height.
+        type: Tells what is slider used for.
+        value: Slider's value
+        rect_slider: Slider's rectangle.
+        rect_circle: Slider's circle.
+        font: Slider's text font
+        moved: Defines if slider's circle was moved.
+        slider_moved: Sound for when slider's circle is moved.
+    """
     def __init__(self, x_pos, y_pos, width, height, type, settings, first_init, sound_vol):
+        """Slider initialization.
+        
+        Args:
+            x_pos: X position for slider.
+            y_pos: Y position for slder.
+            width: Width value for slider.
+            height: Height value for slider.
+            type: Tells what slider is used for.
+            settings: Game's settings
+            first_init: Defines if this is slider's first initialization.
+            sound_vol: Game's sound volume value.
+        """
         self.x = x_pos
         self.y = y_pos
         self.x_circle = self.x
@@ -215,8 +337,15 @@ class Slider:
             os.path.join(dirname, "assets", "button.wav"))
         self.slider_moved.set_volume(sound_vol)
 
-    # Handles displaying and interaction of sliders
     def display(self, window, mouse, mouse_status, player):
+        """Handles displaying and interaction of sliders.
+        
+        Args:
+            window: Game's window.
+            mouse: Mouse position.
+            mouse_status: Defines if mouse button is held down.
+            player: Player object.
+        """
         new_value = False
         collide = self.rect_slider.collidepoint(mouse)
         if collide and not mouse[0] < self.x and not mouse[0] > self.x+200:
@@ -256,8 +385,8 @@ class Slider:
             new_value = False
             return (self.type)
 
-    # Returns slider value
     def get_value(self):
+        """Returns slider value."""
         if self.type == "sound" or self.type == "music":
             return self.value
         if self.type == "resolution":
@@ -285,10 +414,20 @@ class Slider:
                 return (1920, 1080)
 
     def get_type(self):
+        """Returns type of object.
+        
+        Returns:
+            Returns name of object.
+        """
         return "Slider"
 
 
 class Icon:
+    """Icon object.
+    
+    Used for displaying turrets that you can buy while
+    being in construction mode.
+    """
     def __init__(self, x_offset, y_offset, name):
         self.x_offset = x_offset
         self.y_offset = y_offset
@@ -296,6 +435,17 @@ class Icon:
         self.font = pygame.font.SysFont("Arial", 20)
 
     def display(self, window, mouse, mouse_status, player):
+        """Handles displaying and interaction of icons.
+        
+        Args:
+            window: Game's window.
+            mouse: Mouse position.
+            mouse_status: Defines if mouse button is held down.
+            player: Player object.
+            
+        Returns:
+            Icon name if icon was pressed.
+        """
         command = ""
         scale = self.get_scale(window)
         x = (window.get_width()/2)+scale[0]*5+scale[0]
@@ -323,17 +473,24 @@ class Icon:
         return command
 
     def get_scale(self, window):
+        """Gives scale based on window resolution and aspect ratio of resolution.
+        
+        Args:
+            window: Game's window.
+        """
         width = window.get_width()
         height = window.get_height()
-        # 4:3 aspect ratio
         if width == 640 or width == 800 or width == 1024 or width == 1152 or (width == 1280 and height == 960):
             return ((width/40)*2, (height/30)*2)
-        # 16:9 aspect ratio
         if (width == 1280 and height == 720) or width == 1366 or width == 1600 or width == 1920:
             return ((width/160)*8, (height/90)*8)
-        # 16:10 aspect ratio
         else:
             return ((width/160)*8, (height/100)*8)
 
     def get_type(self):
+        """Returns type of object.
+        
+        Returns:
+            Returns name of object.
+        """
         return "Icon"
