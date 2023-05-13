@@ -17,4 +17,5 @@ poetry run invoke start
 ## Päävalikko
 ![Kuva pelin päävalikosta](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/kuvat/paavalikko.png)
 
-Päävalikossa on kolme nappia: **Aloita peli**, **Asetukset** ja **Lopeta peli**.
+Päävalikossa on kolme nappia: **Aloita peli**, **Asetukset** ja **Poistu pelistä**.
+# Aloita peli
