@@ -19,7 +19,12 @@ class Settings:
         self.resolution_y = 720
 
     def set_volume(self, music: float, sound: float):
-        """Sets sound and music volume"""
+        """Sets sound and music volume.
+        
+        Attributes:
+            music: Music volume.
+            sound: Sound volume.
+        """
         music = min(music, 1.0)
         music = max(music, 0.0)
         sound = min(sound, 1.0)
@@ -28,13 +33,21 @@ class Settings:
         self.sound_vol = sound
 
     def set_framerate(self, fps: int):
-        """Sets framerate"""
+        """Sets framerate.
+        
+        Attributes:
+            fps: Frames per second.
+        """
         if fps < 0:
             fps = 24
         self.framerate = fps
 
     def set_resolution(self, res: tuple):
-        """Sets window resolution"""
+        """Sets window resolution.
+        
+        Attributes:
+            res: Window resolution in tuple form.
+        """
         x = res[0]  # pylint: disable=invalid-name
         y = res[1]  # pylint: disable=invalid-name
         x = max(x, 640)  # pylint: disable=invalid-name
