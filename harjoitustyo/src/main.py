@@ -9,8 +9,29 @@ from player import Player
 dirname = os.path.dirname(__file__)
 
 class Main:
+    """Game's main class.
+    
+    Attributes:
+        settings: Game settings.
+        mixer: Audio mixer.
+        fps: Game framerate.
+        clock: Clock for running game loop at given clock cycle (in this case it's framerate).
+        resolution: Window resolution.
+        mouse_button_held_down: Boolean, true if mouse left button is held down. 
+        changed: Boolean, true if in settings menu "apply" or in this case "Käytä" button has been pressed.
+        allowed_enemies_on_screen: Counter for enemies to spawn.
+        enemy_inerval: Interval between enemy spawning.
+        enemy_added: Boolean, true if enem has been added and allowed_enemies_on_screen hasn't been changed after that.
+        stop_spawning: Boolean, true if allowed_enemies_on_screen has hit spawn limit (in this case it's 10 + current round).
+        current_screen: Tells what screen should be displayed.
+        player: Player object that contains info about current round, money amount, owned turrets, desroyed enemies and base's hp.
+        window: Game window.
+        menu: Game UI.
+        menu_objects: Objects of UI.
+        map: Game map.
+    """
     def __init__(self):
-
+        """Game initialization."""
         # Read and check settings
         self.settings = Settings()
         self.mixer = pygame.mixer.init()
@@ -43,6 +64,7 @@ class Main:
         self.run_game()
 
     def change_resolution(self):
+        """Changes window resolution and resets UI objects, map and player values."""
         self.resolution = self.settings.get_resolution()
         pygame.display.quit()
         self.window = pygame.display.set_mode(self.resolution)
@@ -52,12 +74,14 @@ class Main:
         self.update_values()
 
     def run_game(self):
+        """Game loop."""
         while True:
             self.window.fill((0, 0, 0))
             self.event_handler()
             self.draw_screen()
 
     def event_handler(self):
+        """Handles keypresses and other events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit(0)
@@ -136,11 +160,13 @@ class Main:
             self.current_screen = "construction_view"
 
     def update_values(self):
+        """Updates UI objects with new values."""
         self.menu = Menu(self.resolution[0], self.resolution[1],
                          self.settings, False, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
 
     def reset_game(self):
+        """Resets whole game."""
         self.player = Player()
         self.map = Map()
         self.allowed_enemies_on_screen = 0
@@ -150,6 +176,7 @@ class Main:
         self.update_values()
 
     def draw_screen(self):
+        """Handles screen drawing"""
         mouse_pos = pygame.mouse.get_pos()
         # Menu
         if self.current_screen in ("construction_view", "game_view"):
