@@ -1,7 +1,6 @@
 import os
 import pygame
 from turrets import Turret
-from map import Map
 
 dirname = os.path.dirname(__file__)
 
@@ -30,7 +29,7 @@ class Menu:
         self.object = []
         self.selected_turret = ""
         self.buy_button_created = False
-        # Main Menu objects
+
         self.object.append((Button((width/2)-50, height/2, 100,
                            50, "Aloita Peli", self.font, sound_vol), "main_menu"))
         self.object.append((Button((width/2)-50, (height/2)+75,
@@ -40,7 +39,6 @@ class Menu:
         self.object.append(
             (Label((width/2)-125, (height/2)-200, "Tower Defence", 48), "main_menu"))
 
-        # Settings Menu objects
         self.object.append((Button((width/2)-100, (height/2)+150, 100,
                            50, "Takaisin", self.font, sound_vol), "settings_menu"))
         self.object.append((Button((width/2)+100, (height/2)+150,
@@ -58,7 +56,6 @@ class Menu:
         self.object.append(
             (Label((width/2)-50, (height/2), "Resoluutio", 20), "settings_menu"))
 
-        # Game objects when game started and construct mode is true
         self.object.append((Button(width-150, height-150, 100,
                            50, "Valmis", self.font, sound_vol), "construction_view"))
         self.object.append((Icon(False, False, "cannon"), "construction_view"))
@@ -70,7 +67,6 @@ class Menu:
         self.object.append(
             (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "construction_view"))
         
-        # Game objects when game started and construct mode is false
         self.object.append(
             (Label(width-150, 20, "Rahaa: " + str(player.get_money()), 20), "game_view"))
         self.object.append(
@@ -79,7 +75,6 @@ class Menu:
             (Label(width/2, 20, "Kierros: " + str(player.get_current_round()), 20), "game_view"))
         self.already_pressed = False
 
-       # Game over screen
         self.object.append(
             (Label(width/2-50, 125,
                     "Peli päättyi!", 32), "results_view"))
@@ -137,9 +132,9 @@ class Label:
         
         Args:
             window: Game's window.
-            mouse: Mouse position.
-            mouse_status: Defines if mouse button is held down.
-            player: Player object.
+            mouse: Not used here.
+            mouse_status: Not used here.
+            player: Not used here.
         """
         window.blit(self.text, (self.x, self.y))
 
@@ -167,9 +162,9 @@ class Button:
         button_hover_sound: Sound for when mouse hovers over button.
         button_pressed_sound: Sound for when button is pressed.
         button_surface: Surface for button.
-        buttonRect: Button rectangle.
-        buttonText: Text for button.
-        buttonColors: A dict list of color values for different button states. 
+        button_rect: Button rectangle.
+        button_text: Text for button.
+        button_color: A dict list of color values for different button states. 
     """
     def __init__(self, x_pos, y_pos, width, height, text, font, sound_vol):
         """Button initialization.
@@ -200,11 +195,11 @@ class Button:
         self.button_pressed_sound.set_volume(sound_vol)
 
         self.button_surface = pygame.Surface((self.width, self.height))
-        self.buttonRect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.button_rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-        self.buttonText = self.font.render(text, True, (25, 25, 25))
+        self.button_text = self.font.render(text, True, (25, 25, 25))
 
-        self.buttonColors = {
+        self.button_color = {
             "unpressed": "#ff0000",
             "hovered": "#d66d6d"
         }
@@ -216,16 +211,16 @@ class Button:
             window: Game's window.
             mouse: Mouse position.
             mouse_status: Defines if mouse button is held down.
-            player: Player object.
+            player: Not used here.
         
         Returns:
             Button text if button was pressed. Else it will return empty string.
         """
         if not mouse_status:
             Menu.already_pressed = False
-        self.button_surface.fill(self.buttonColors["unpressed"])
-        if self.buttonRect.collidepoint(mouse):
-            self.button_surface.fill(self.buttonColors["hovered"])
+        self.button_surface.fill(self.button_color["unpressed"])
+        if self.button_rect.collidepoint(mouse):
+            self.button_surface.fill(self.button_color["hovered"])
             if not self.is_being_hovered:
                 self.is_being_hovered = True
                 pygame.mixer.Sound.play(self.button_hover_sound)
@@ -246,9 +241,9 @@ class Button:
         else:
             self.is_being_hovered = False
 
-        self.button_surface.blit(self.buttonText, [self.buttonRect.width/2 - self.buttonText.get_rect(
-        ).width/2, self.buttonRect.height/2 - self.buttonText.get_rect().height/2])
-        window.blit(self.button_surface, self.buttonRect)
+        self.button_surface.blit(self.button_text, [self.button_rect.width/2 - self.button_text.get_rect(
+        ).width/2, self.button_rect.height/2 - self.button_text.get_rect().height/2])
+        window.blit(self.button_surface, self.button_rect)
         return ""
 
     def get_type(self):
@@ -344,7 +339,7 @@ class Slider:
             window: Game's window.
             mouse: Mouse position.
             mouse_status: Defines if mouse button is held down.
-            player: Player object.
+            player: Not used here.
         """
         new_value = False
         collide = self.rect_slider.collidepoint(mouse)
@@ -440,7 +435,7 @@ class Icon:
         Args:
             window: Game's window.
             mouse: Mouse position.
-            mouse_status: Defines if mouse button is held down.
+            mouse_status: Not used here.
             player: Player object.
             
         Returns:

@@ -14,7 +14,7 @@ class Player:
     """
     def __init__(self):
         """Player initialization."""
-        self.health = 250  
+        self.health = 250
         self.money = 1000  # pylint: disable=invalid-name
         self.current_round = 1
         self.destroyed_enemies = 0
@@ -72,12 +72,9 @@ class Player:
             True if hitpoints are bigger that player's current health. Else returns false.
             Used for game over check.
         """
-        # If negative, change to zero
         hitpoints = max(hitpoints, 0)
-        # If damage is bigger than or same as player's health, make player's health to zero
-        # and return True for gameOver check
         if self.health <= hitpoints:
-            self.health = 0  
+            self.health = 0
             return True
         self.health -= hitpoints
         return False
@@ -85,15 +82,15 @@ class Player:
     def get_current_round(self):
         """Gives game's current round."""
         return self.current_round
-    
+
     def get_money(self):
         """Gives player's current amount of money."""
         return self.money
-    
+
     def get_health(self):
         """Gives player's current amount of health"""
         return self.health
-    
+
     def add_destroyed_enemy(self):
         """Adds one to destroyed enemies counter."""
         self.destroyed_enemies += 1

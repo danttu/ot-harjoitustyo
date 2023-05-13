@@ -18,13 +18,17 @@ class Main:
         clock: Clock for running game loop at given clock cycle (in this case it's framerate).
         resolution: Window resolution.
         mouse_button_held_down: Boolean, true if mouse left button is held down. 
-        changed: Boolean, true if in settings menu "apply" or in this case "Käytä" button has been pressed.
+        changed: Boolean, true if in settings menu "apply" or in this case
+        "Käytä" button has been pressed.
         allowed_enemies_on_screen: Counter for enemies to spawn.
         enemy_inerval: Interval between enemy spawning.
-        enemy_added: Boolean, true if enem has been added and allowed_enemies_on_screen hasn't been changed after that.
-        stop_spawning: Boolean, true if allowed_enemies_on_screen has hit spawn limit (in this case it's 10 + current round).
+        enemy_added: Boolean, true if enem has been added and allowed_enemies_on_screen hasn't been
+        changed after that.
+        stop_spawning: Boolean, true if allowed_enemies_on_screen has hit spawn limit
+        (in this case it's 10 + current round).
         current_screen: Tells what screen should be displayed.
-        player: Player object that contains info about current round, money amount, owned turrets, desroyed enemies and base's hp.
+        player: Player object that contains info about current round, money amount,
+        owned turrets, desroyed enemies and base's hp.
         window: Game window.
         menu: Game UI.
         menu_objects: Objects of UI.
@@ -32,35 +36,26 @@ class Main:
     """
     def __init__(self):
         """Game initialization."""
-        # Read and check settings
         self.settings = Settings()
         self.mixer = pygame.mixer.init()
         self.fps = self.settings.get_framerate()
         self.clock = pygame.time.Clock()
         self.resolution = self.settings.get_resolution()
-
         self.mouse_button_held_down = False
         self.changed = False
         self.allowed_enemies_on_screen = 0
         self.enemy_interval = 0
         self.enemy_added = False
         self.stop_spawning = False
-        # Main menu: main_menu, Settings: settings_menu, Game: game_view
         self.current_screen = "main_menu"
-        # Init player
         self.player = Player()
-
         pygame.init()
-        # Init menu and window
         self.window = pygame.display.set_mode(self.resolution)
         pygame.display.set_caption("Tower Defence")
         self.menu = Menu(self.resolution[0], self.resolution[1],
                          self.settings, True, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
-       
-        # Init map
         self.map = Map()
-        # Starting gameloop
         self.run_game()
 
     def change_resolution(self):
@@ -90,16 +85,14 @@ class Main:
             if event.type == pygame.MOUSEBUTTONUP:
                 self.mouse_button_held_down = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE and self.current_screen in ("construction_view", "game_view"):
+                if event.key == pygame.K_ESCAPE and self.current_screen in (
+                    "construction_view", "game_view"):
                     self.current_screen = "results_view"
                     self.window.fill((0, 0, 0))
         if self.changed:
-                self.changed = False
-                self.change_resolution()
-            
+            self.changed = False
+            self.change_resolution()
         if self.current_screen == "game_view":
-            # Enemy spawning
-            # If allowed amount of enemies goes over stop spawning
             if self.allowed_enemies_on_screen == 10 + self.player.get_current_round():
                 self.stop_spawning = True
             if not self.stop_spawning:
@@ -108,19 +101,18 @@ class Main:
                     self.allowed_enemies_on_screen += 1
                     self.enemy_added = False
 
-            if self.allowed_enemies_on_screen <= 10 + self.player.get_current_round() and not self.enemy_added:
+            if self.allowed_enemies_on_screen <= (
+                10 + self.player.get_current_round()) and not self.enemy_added:
                 self.enemy_added = True
                 self.map.add_enemies(self.player.get_current_round(),
                                       self.window, self.allowed_enemies_on_screen,
                                       self.settings.get_volume()[1])
-            # Check if enemy near turret
             remove_enemy = False
             for turret in self.player.turrets.turrets:
                 for enemy in self.map.enemies.enemies:
                     if turret.check_if_enemy_in_range(enemy):
                         if enemy.take_hit(turret.damage):
                             remove_enemy = True
-                
                     if remove_enemy:
                         self.map.enemies.remove_enemy(enemy)
                         self.player.add_destroyed_enemy()
@@ -129,11 +121,9 @@ class Main:
                         remove_enemy = False
                         continue
                 turret.first_enemy = -1
-            # Move enemy
             for enemy in self.map.enemies.enemies:
                 self.map.enemy_check_tile(enemy, self.window)
                 enemy.move_enemy()
-                # Check if enemy at base
                 if enemy.enemy_at_base:
                     if enemy.last_shot == 0:
                         enemy.last_shot = pygame.time.get_ticks()
@@ -178,7 +168,6 @@ class Main:
     def draw_screen(self):
         """Handles screen drawing"""
         mouse_pos = pygame.mouse.get_pos()
-        # Menu
         if self.current_screen in ("construction_view", "game_view"):
             self.map.draw_map(self.window)
         if self.current_screen == "results_view":
@@ -234,11 +223,9 @@ class Main:
                                 self.settings.set_resolution(value)
                                 self.changed = True
                     self.settings.set_volume(music_vol, sound_vol)
-        #Turrets
         if self.current_screen in ("construction_view", "game_view"):
             for turret in self.player.turrets.get_turrets():
                 turret.draw_turret(self.window, mouse_pos, self.map)
-        #Enemies
         if len(self.map.enemies.enemies) > 0:
             if self.current_screen == "game_view":
                 for enemy in self.map.enemies.enemies:
