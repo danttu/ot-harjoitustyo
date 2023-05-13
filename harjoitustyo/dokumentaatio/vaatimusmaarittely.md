@@ -24,7 +24,7 @@ Peli on *reaaliaikainen Tower Defence* peli, jossa puolustetaan omaa tukikohtaa 
 - Kun *Valmis*-nappi on painettu:
   - Pelaaja on **puolustusvaiheessa** ja vihollisten hyökkäys alkaa *Tehty*
   - Jos nykyisen kierroksen kaikki viholliset ovat päihitetty siirtyy pelaaja takaisin **suunnitteluvaiheeseen** suunnittelemaan puolustusta seuraavaa kierrosta varten
-  - Jos vihollinen onnistuu tuhoamaan pelaajan tukikohdan niin pelaaja siirtyy **lopputulosruutuun**
+  - Jos vihollinen onnistuu tuhoamaan pelaajan tukikohdan niin pelaaja siirtyy **lopputulosruutuun** *Tehty*
 - Lopputulosruutu:
   - Näytetään kierros, jossa epäonnistuttiin puolustamaan omaa tukikohtaa, rahamäärä, tuhottujen vihollisten määrä ja kaksi nappia: *Aloita uusi peli* ja *Poistu päävalikkoon*
   - Jos pelaaja painaa *Aloita uusi peli*-nappia, peli nollaa pelikentän ja palauttaa arvot aloitusarvoihin. Pelin kulku alkaa alusta,
