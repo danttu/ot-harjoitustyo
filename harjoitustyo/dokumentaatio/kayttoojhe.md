@@ -5,10 +5,8 @@ Asenna kaikki pelin tarvittavat riippuvuudet seuraavalla komennolla:
 ```
 poetry install
 ```
-Sen jälkeen kun kaikki riippuvuudet on asennettu suoritetaan alustustoimenpiteet:
-```
-poetry run invoke build
-```
+Sen jälkeen kun kaikki riippuvuudet on asennettu pelin voi käynnistää.
+
 ## Pelin käynnistäminen
 Pelin käynnistät seuraavalla komennolla:
 ```
