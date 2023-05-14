@@ -12,5 +12,5 @@
 | 10.5 | 3 | Lisätty ominaisuuksia peliin |
 | 12.5 | 4 | Peli kirjoitettu valmiiksi. Peliä korjattu |
 | 13.5 | 5 | Kirjoitettu dokumentaatio |
-| 14.5 | 2 | Viimeistelty dokumentaatio |
-| yht | 37 | |
+| 14.5 | 6 | Viimeistelty dokumentaatio. Viimeistelty repositorio kuntoon. |
+| yht | 41 | |
