@@ -7,32 +7,32 @@ Peli saattaa toimia vanhemmalla versiolla, mutta en voi taataa toimivuuden.
 Muista myös asentaa poetry ja päivittää se viimeisimpään versioon.
 Kaikki komennot pitää suorittaa "**harjoitustyo**"-kansiossa, eikä juurikansiossa eli ei "ot-harjoitustyo"-kansiossa.
 
-### Dokumentaatio
+## Dokumentaatio
 - [Työaikakirjanpito](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/tuntikirjanpito.md)
 - [Vaatimusmäärittely](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
 - [Changelog](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/changelog.md)
 - [Arkkitehtuuri (kesken)](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
 - [Käyttöohje](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/kayttoojhe.md)
 
-### Releaset
+## Releaset
 - [Release 1](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko5)
 - [~~Release 2~~]()
   - Viikko 6:n palautus unohtui.
 - [Release 3](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko7)
 
-### Pelin asennus
+## Pelin asennus
 Asenna kaikki pelin tarvittavat riippuvuudet seuraavalla komennolla:
 ```
 poetry install
 ```
 Sen jälkeen kun kaikki riippuvuudet on asennettu pelin voi käynnistää.
 
-### Pelin käynnistäminen
+## Pelin käynnistäminen
 Pelin käynnistät seuraavalla komennolla:
 ```
 poetry run invoke start
 ```
-### Pelin testaus
+## Pelin testaus
 Peliä testataan suorittamalla seuraava komento:
 ```
 poetry run invoke test
