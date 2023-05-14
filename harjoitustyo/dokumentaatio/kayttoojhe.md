@@ -1,6 +1,9 @@
 # Käyttöohje
 
 ## Pelin asennus
+
+**Huom. Komennot pitää suorittaa "harjoitustyo"-kansiossa, eikä juurikansiossa eli ei "ot-harjoitustyo"-kansiossa.**
+
 Asenna kaikki pelin tarvittavat riippuvuudet seuraavalla komennolla:
 ```
 poetry install
