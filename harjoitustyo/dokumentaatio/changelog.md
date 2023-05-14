@@ -17,3 +17,14 @@
 - Lisätty tekstuurit
 - Luotu luokat, joilla luodaan viholliset ja puolustusaseet
 - Luotu luokka, joka pitää kirjaa pelaajan rahasta, elämät ja nykyisestä kierroksesta
+
+## Viikko 6
+- Kirjoitettu lisää koodia
+- Kirjoitettu testejä
+- Korjattu peliä
+
+## Viikko 7
+- Peli saatu valmiiksi
+- Peli korjattu
+- Peli dokumentoitu
+- GitHubin viimeistely
