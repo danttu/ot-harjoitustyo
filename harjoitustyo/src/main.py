@@ -53,7 +53,7 @@ class Main:
         self.window = pygame.display.set_mode(self.resolution)
         pygame.display.set_caption("Tower Defence")
         self.menu = Menu(self.resolution[0], self.resolution[1],
-                         self.settings, True, self.settings.get_volume()[1], self.player)
+                         self.settings, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
         self.map = Map()
         self.run_game()
@@ -67,6 +67,7 @@ class Main:
         self.allowed_enemies_on_screen = 0
         self.player = Player()
         self.update_values()
+        self.settings.change_file_values()
 
     def run_game(self):
         """Game loop."""
@@ -152,7 +153,7 @@ class Main:
     def update_values(self):
         """Updates UI objects with new values."""
         self.menu = Menu(self.resolution[0], self.resolution[1],
-                         self.settings, False, self.settings.get_volume()[1], self.player)
+                         self.settings, self.settings.get_volume()[1], self.player)
         self.menu_objects = self.menu.object
 
     def reset_game(self):

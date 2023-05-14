@@ -14,14 +14,13 @@ class Menu:
         buy_button_created: Defines if "buy" button has been created.
         already_pressed: Defines if button was already pressed.
     """
-    def __init__(self, width, height, settings, first_init, sound_vol, player):
+    def __init__(self, width, height, settings, sound_vol, player):
         """UI initialization.
         
         Args:
             width: Window width.
             height: Window height.
             settings: Game settings.
-            first_init: Defines if it's first time initializing object.
             sound_vol: Game's sound volume value.
             player: Player object.
         """
@@ -44,15 +43,15 @@ class Menu:
         self.object.append((Button((width/2)+100, (height/2)+150,
                            100, 50, "Käytä", self.font, sound_vol), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)-160, 200,
-                           10, "music", settings, first_init, sound_vol), "settings_menu"))
+                           10, "music", settings, sound_vol), "settings_menu"))
         self.object.append(
             (Label((width/2)-55, (height/2)-200, "Musiikki", 20), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)-60, 200,
-                           10, "sound", settings, first_init, sound_vol), "settings_menu"))
+                           10, "sound", settings, sound_vol), "settings_menu"))
         self.object.append(
             (Label((width/2)-50, (height/2)-100, "Ääni", 20), "settings_menu"))
         self.object.append((Slider((width/2)-100, (height/2)+40, 200, 10,
-                           "resolution", settings, first_init, sound_vol), "settings_menu"))
+                           "resolution", settings, sound_vol), "settings_menu"))
         self.object.append(
             (Label((width/2)-50, (height/2), "Resoluutio", 20), "settings_menu"))
 
@@ -273,7 +272,7 @@ class Slider:
         moved: Defines if slider's circle was moved.
         slider_moved: Sound for when slider's circle is moved.
     """
-    def __init__(self, x_pos, y_pos, width, height, type, settings, first_init, sound_vol):
+    def __init__(self, x_pos, y_pos, width, height, type, settings, sound_vol):
         """Slider initialization.
         
         Args:
@@ -283,7 +282,6 @@ class Slider:
             height: Height value for slider.
             type: Tells what slider is used for.
             settings: Game's settings
-            first_init: Defines if this is slider's first initialization.
             sound_vol: Game's sound volume value.
         """
         self.x = x_pos
@@ -293,37 +291,34 @@ class Slider:
         self.height = height
         self.type = type
         self.value = 1.0
-        if first_init:
-            self.value = 1.0
-        else:
-            if self.type == "sound":
-                self.value = settings.get_volume()[1]
-            if self.type == "music":
-                self.value = settings.get_volume()[0]
-            if self.type == "resolution":
-                res = settings.get_resolution()
-                if res[0] == 640:
-                    self.value = 0.0
-                if res[0] == 800:
-                    self.value = 0.1
-                if res[0] == 1024:
-                    self.value = 0.2
-                if res[0] == 1152:
-                    self.value = 0.3
-                if res[0] == 1280 and res[1] == 720:
-                    self.value = 0.4
-                if res[0] == 1280 and res[1] == 960:
-                    self.value = 0.5
-                if res[0] == 1366:
-                    self.value = 0.6
-                if res[0] == 1440:
-                    self.value = 0.7
-                if res[0] == 1660:
-                    self.value = 0.8
-                if res[0] == 1680:
-                    self.value = 0.9
-                if res[0] == 1920:
-                    self.value = 1.0
+        if self.type == "sound":
+            self.value = settings.get_volume()[1]
+        if self.type == "music":
+            self.value = settings.get_volume()[0]
+        if self.type == "resolution":
+            res = settings.get_resolution()
+            if res[0] == 640:
+                self.value = 0.0
+            if res[0] == 800:
+                self.value = 0.1
+            if res[0] == 1024:
+                self.value = 0.2
+            if res[0] == 1152:
+                self.value = 0.3
+            if res[0] == 1280 and res[1] == 720:
+                self.value = 0.4
+            if res[0] == 1280 and res[1] == 960:
+                self.value = 0.5
+            if res[0] == 1366:
+                self.value = 0.6
+            if res[0] == 1440:
+                self.value = 0.7
+            if res[0] == 1660:
+                self.value = 0.8
+            if res[0] == 1680:
+                self.value = 0.9
+            if res[0] == 1920:
+                self.value = 1.0
         self.rect_slider = pygame.Rect(self.x, self.y, self.width, self.height)
         self.rect_circle = pygame.Rect(self.x, self.y-5, 20, 20)
         self.font = pygame.font.SysFont("Arial", 20)
