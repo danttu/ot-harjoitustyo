@@ -18,7 +18,7 @@ Kaikki komennot pitää suorittaa "**harjoitustyo**"-kansiossa, eikä juurikansi
 - [Release 1](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko5)
 - [~~Release 2~~]()
   - Viikko 6:n palautus unohtui.
-- [Release 3](https://github.com/danttu/ot-harjoitustyo/releases/tag/loppupalautus)
+- [Loppupalautus](https://github.com/danttu/ot-harjoitustyo/releases/tag/loppupalautus)
 
 ## Pelin asennus
 Asenna kaikki pelin tarvittavat riippuvuudet seuraavalla komennolla:
