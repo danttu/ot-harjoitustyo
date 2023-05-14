@@ -12,12 +12,13 @@ Kaikki komennot pitää suorittaa "**harjoitustyo**"-kansiossa, eikä juurikansi
 - [Vaatimusmäärittely](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/vaatimusmaarittely.md)
 - [Changelog](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/changelog.md)
 - [Arkkitehtuuri (kesken)](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/arkkitehtuuri.md)
-- [Käyttöohje] (https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/kayttoojhe.md)
+- [Käyttöohje](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/dokumentaatio/kayttoojhe.md)
 
 ### Releaset
-[Release 1](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko5)
-[~~Release 2~~]()
-[Release 3](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko7)
+- [Release 1](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko5)
+- [~~Release 2~~]()
+  - Viikko 6:n palautus unohtui.
+- [Release 3](https://github.com/danttu/ot-harjoitustyo/releases/tag/viikko7)
 
 ### Pelin asennus
 Asenna kaikki pelin tarvittavat riippuvuudet seuraavalla komennolla:
