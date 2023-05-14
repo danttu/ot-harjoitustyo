@@ -79,7 +79,6 @@ class Settings:
         Returns:
             Attribute and its value.
         """
-        print(row)
         attribute = ""
         value = ""
         i = 0
