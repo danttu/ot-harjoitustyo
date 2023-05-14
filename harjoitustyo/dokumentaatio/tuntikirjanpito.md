@@ -9,4 +9,8 @@
 | 20.4 | 3 | Lisätty luokka, jolla luodaan kartta |
 | 22.4 | 3 | Lisätty pari luokkaa. Lisätty tekstuurit |
 | 25.4 | 4 | Lisätty uusi luokka | 
-| yht | 23 | |
+| 10.5 | 3 | Lisätty ominaisuuksia peliin |
+| 12.5 | 4 | Peli kirjoitettu valmiiksi. Peliä korjattu |
+| 13.5 | 5 | Kirjoitettu dokumentaatio |
+| 14.5 | 2 | Viimeistelty dokumentaatio |
+| yht | 37 | |
