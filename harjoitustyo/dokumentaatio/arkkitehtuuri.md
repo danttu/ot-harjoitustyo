@@ -21,3 +21,13 @@ Pelin koodi koostuu seitsemästä `.py`-tiedostosta:
 - [player.py](https://github.com/danttu/ot-harjoitustyo/blob/main/harjoitustyo/src/player.py)
   - Hoitaa pelaajan liittyvästä koodista.
   
+```mermaid
+sequenceDiagram
+    actor User
+    User ->>Button: click "Aloita peli" button
+    Button ->>main: returns "Aloita peli"
+    main ->>main: self.current_screen = "construction_view"
+```
+Pelaajan painettua "**Aloita peli**"-nappia `Button`-luokka palauttaa napin teksti `Main`-luokalle, jota se käyttää komentona.
+Komento johtaa `self.current_screen`-muuttujan vaihtamaan sisällöksi "construction_view". Muuttuja kertoo, mitä käyttöliittymän objekteja
+`Main`-luokan pitää piirtää.
