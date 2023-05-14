@@ -2,7 +2,7 @@
 Tower Defence on reaaliaikainen tornipuolustuspeli, eli siinä puolustetaan omaa tukikohtaa vihollisilta.
 
 ##Huomautukset
-Varmista, että sinulla on asennettuna **Python** vähintään versio **3.8**. 
+Varmista, että sinulla on asennettuna **Python** vähintään versio `3.8`. 
 Peli saattaa toimia vanhemmalla versiolla, mutta en voi taataa toimivuuden.
 Muista myös asentaa poetry ja päivittää se viimeisimpään versioon.
 Kaikki komennot pitää suorittaa "**harjoitustyo**"-kansiossa, eikä juurikansiossa eli ei "ot-harjoitustyo"-kansiossa.
